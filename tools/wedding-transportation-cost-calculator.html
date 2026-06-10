@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Transportation Cost Calculator - Limo, Shuttle &amp; More | AI Wedding Calc</title>
+  <meta name="description" content="Calculate wedding transportation costs including limos, party buses, and guest shuttles.">
+  <meta name="keywords" content="wedding transportation cost calculator, wedding limo cost, wedding shuttle budget, wedding transportation budget, wedding car rental cost">
+  <link rel="canonical" href="https://aiweddingcalc.com/tools/wedding-transportation-cost-calculator.html">
+  <meta property="og:title" content="Wedding Transportation Cost Calculator | AI Wedding Calc">
+  <meta property="og:description" content="Calculate wedding transportation costs including limos, party buses, and guest shuttles.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aiweddingcalc.com/tools/wedding-transportation-cost-calculator.html">
+  <meta property="og:site_name" content="AI Wedding Calc">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wedding Transportation Cost Calculator | AI Wedding Calc">
+  <meta name="twitter:description" content="Calculate wedding transportation costs including limos, party buses, and guest shuttles.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Wedding Transportation Cost Calculator","url":"https://aiweddingcalc.com/tools/wedding-transportation-cost-calculator.html","description":"Calculate wedding transportation costs including limos, party buses, and guest shuttles.","applicationCategory":"LifestyleApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AI Wedding Calc","url":"https://aiweddingcalc.com"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does a wedding limo cost?","acceptedAnswer":{"@type":"Answer","text":"Limousines range from $400-$1,200 for 3-4 hours. Party buses cost $600-$1,500 for the same duration."}},{"@type":"Question","name":"Do I need to provide guest transportation?","acceptedAnswer":{"@type":"Answer","text":"If your ceremony and reception are at different venues, or if parking is limited, guest shuttles are a thoughtful and expected touch."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aiweddingcalc.com/"},{"@type":"ListItem","position":2,"name":"Planning & Timeline","item":"https://aiweddingcalc.com/#tools"},{"@type":"ListItem","position":3,"name":"Wedding Transportation Cost Calculator","item":"https://aiweddingcalc.com/tools/wedding-transportation-cost-calculator.html"}]}</script>
+</head>
+<body>
+  <header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-icon">AI</span> AI Wedding Calc</a>
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#tools">All Calculators</a></li>
+        <li><a href="/tools/wedding-budget-calculator.html">Budget Calculator</a></li>
+        <li><a href="/tools/wedding-catering-calculator.html">Catering</a></li>
+        <li><a href="/tools/wedding-alcohol-calculator.html">Alcohol</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="document.getElementById('mainNav').classList.toggle('active')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+  <section class="tool-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="sep"></span>
+        <a href="/#tools">Planning &amp; Timeline</a>
+        <span class="sep"></span>
+        <span>Wedding Transportation Cost Calculator</span>
+      </nav>
+      <h1>Wedding Transportation Cost Calculator</h1>
+      <p class="subtitle">Get everyone where they need to be on time and on budget</p>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-content" data-ad="wedding-transportation-cost-calculator-top" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="calc-layout">
+      <div class="calc-form-wrapper">
+        <form id="calcForm" class="calc-form" data-tool-id="wedding-transportation-cost-calculator" data-result-type="total">
+          <h2>🚗 Enter Your Details</h2>
+          <div class="form-group">
+        <label for="vehicleType">Vehicle Type <span style="color:#e53935">*</span></label>
+        <select id="vehicleType" name="vehicleType" required>
+          <option value="">Select...</option>
+          <option value="Classic Limousine">Classic Limousine</option><option value="SUV Limousine">SUV Limousine</option><option value="Party Bus">Party Bus</option><option value="Vintage Car">Vintage Car</option><option value="Luxury Sedan">Luxury Sedan</option><option value="Guest Shuttle Bus">Guest Shuttle Bus</option>
+        </select>
+      </div><div class="form-group">
+      <label for="duration">Rental Duration (hours) <span style="color:#e53935">*</span></label>
+      <input type="number" id="duration" name="duration" placeholder="4" min="2" max="12" step="0.5" required>
+    </div><div class="form-group">
+        <label for="needShuttle">Need Guest Shuttle? <span style="color:#e53935">*</span></label>
+        <select id="needShuttle" name="needShuttle" required>
+          <option value="">Select...</option>
+          <option value="Yes - Round Trip">Yes - Round Trip</option><option value="Yes - One Way">Yes - One Way</option><option value="No">No</option>
+        </select>
+      </div><div class="form-group">
+      <label for="guestShuttleCount">Guests Needing Shuttle</label>
+      <input type="number" id="guestShuttleCount" name="guestShuttleCount" placeholder="30"  max="200" step="5" >
+    </div>
+          <button type="submit" class="calc-btn">✨ Calculate with AI</button>
+        </form>
+      </div>
+      <div class="calc-results">
+        <div id="resultsPanel" class="results-panel" style="display:none"></div>
+        <div class="ad-slot ad-slot-sidebar" data-ad="wedding-transportation-cost-calculator-sidebar" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-slot-content" data-ad="wedding-transportation-cost-calculator-mid" aria-hidden="true"></div>
+
+  <section class="faq-section">
+    <div class="container">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">How much does a wedding limo cost? <span class="icon">+</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Limousines range from $400-$1,200 for 3-4 hours. Party buses cost $600-$1,500 for the same duration.</div></div>
+    </div>
+  
+    <div class="faq-item">
+      <button class="faq-question">Do I need to provide guest transportation? <span class="icon">+</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">If your ceremony and reception are at different venues, or if parking is limited, guest shuttles are a thoughtful and expected touch.</div></div>
+    </div>
+  </div>
+    </div>
+  </section>
+
+  <section class="related-tools">
+    <div class="container">
+      <h2>Related Calculators</h2>
+      <div class="tools-grid" style="grid-template-columns:repeat(auto-fill,minmax(250px,1fr))">
+    <a href="/tools/wedding-timeline-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">⏰</div>
+      <h3>Wedding Timeline Calculator</h3>
+      <p>Build a stress-free wedding day schedule</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-vendor-comparison-tool.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">⚖️</div>
+      <h3>Wedding Vendor Comparison Tool</h3>
+      <p>Compare vendor quotes like a pro</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-checklist-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">✅</div>
+      <h3>Wedding Checklist Priority Calculator</h3>
+      <p>Know exactly what to book and when</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-table-size-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">📏</div>
+      <h3>Wedding Table Size Calculator</h3>
+      <p>Choose the right table size for your guest count and space</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-catering-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🍽️</div>
+      <h3>Wedding Catering Calculator</h3>
+      <p>Estimate food costs for your wedding reception</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-alcohol-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🍷</div>
+      <h3>Wedding Alcohol Calculator</h3>
+      <p>Estimate how much alcohol you need for your reception</p>
+      <span class="arrow">Try it</span>
+    </a>
+  </div>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-footer" data-ad="wedding-transportation-cost-calculator-footer" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="/" class="logo"><span class="logo-icon">AI</span> AI Wedding Calc</a>
+        <p>Free AI-powered wedding calculators to help you plan your perfect day. Trusted by 100,000+ couples across the US.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Budget Tools</h4>
+        <ul><li><a href="/tools/wedding-budget-calculator.html">Budget Calc</a></li><li><a href="/tools/wedding-cost-estimator.html">Cost Estimator</a></li><li><a href="/tools/wedding-savings-calculator.html">Savings Calc</a></li><li><a href="/tools/honeymoon-budget-calculator.html">Honeymoon Calc</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Food & Drinks</h4>
+        <ul><li><a href="/tools/wedding-catering-calculator.html">Catering Calc</a></li><li><a href="/tools/wedding-alcohol-calculator.html">Alcohol Calc</a></li><li><a href="/tools/wedding-bar-cost-calculator.html">Bar Cost</a></li><li><a href="/tools/wedding-cake-calculator.html">Cake Calc</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Planning</h4>
+        <ul><li><a href="/tools/wedding-timeline-calculator.html">Timeline</a></li><li><a href="/tools/wedding-vendor-comparison-tool.html">Vendor Compare</a></li><li><a href="/tools/wedding-checklist-calculator.html">Checklist</a></li><li><a href="/tools/wedding-officiant-cost-calculator.html">Officiant Cost</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 AI Wedding Calc. All rights reserved.</span>
+      <span>Made with love for couples planning their big day</span>
+    </div>
+  </div>
+</footer>
+
+  <script src="/js/calculator-engine.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

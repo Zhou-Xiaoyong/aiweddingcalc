@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding RSVP Calculator - Estimate Attendance &amp; Decline Rate | AI Wedding Calc</title>
+  <meta name="description" content="Estimate how many guests will attend your wedding based on RSVP patterns. Get AI predictions for your actual attendance count.">
+  <meta name="keywords" content="wedding RSVP calculator, wedding attendance estimator, wedding decline rate, how many guests will attend, wedding RSVP tracker">
+  <link rel="canonical" href="https://aiweddingcalc.com/tools/wedding-rsvp-calculator.html">
+  <meta property="og:title" content="Wedding RSVP Calculator | AI Wedding Calc">
+  <meta property="og:description" content="Estimate how many guests will attend your wedding based on RSVP patterns. Get AI predictions for your actual attendance count.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aiweddingcalc.com/tools/wedding-rsvp-calculator.html">
+  <meta property="og:site_name" content="AI Wedding Calc">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wedding RSVP Calculator | AI Wedding Calc">
+  <meta name="twitter:description" content="Estimate how many guests will attend your wedding based on RSVP patterns. Get AI predictions for your actual attendance count.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Wedding RSVP Calculator","url":"https://aiweddingcalc.com/tools/wedding-rsvp-calculator.html","description":"Estimate how many guests will attend your wedding based on RSVP patterns. Get AI predictions for your actual attendance count.","applicationCategory":"LifestyleApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AI Wedding Calc","url":"https://aiweddingcalc.com"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Whats the average wedding RSVP acceptance rate?","acceptedAnswer":{"@type":"Answer","text":"Local guests accept at about 85%, out-of-town at 65%, and international guests at about 40%."}},{"@type":"Question","name":"When should I send RSVP reminders?","acceptedAnswer":{"@type":"Answer","text":"Send a gentle reminder 2 weeks before the RSVP deadline, and follow up individually 1 week after."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aiweddingcalc.com/"},{"@type":"ListItem","position":2,"name":"Guest Management","item":"https://aiweddingcalc.com/#tools"},{"@type":"ListItem","position":3,"name":"Wedding RSVP Calculator","item":"https://aiweddingcalc.com/tools/wedding-rsvp-calculator.html"}]}</script>
+</head>
+<body>
+  <header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-icon">AI</span> AI Wedding Calc</a>
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#tools">All Calculators</a></li>
+        <li><a href="/tools/wedding-budget-calculator.html">Budget Calculator</a></li>
+        <li><a href="/tools/wedding-catering-calculator.html">Catering</a></li>
+        <li><a href="/tools/wedding-alcohol-calculator.html">Alcohol</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="document.getElementById('mainNav').classList.toggle('active')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+  <section class="tool-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="sep"></span>
+        <a href="/#tools">Guest Management</a>
+        <span class="sep"></span>
+        <span>Wedding RSVP Calculator</span>
+      </nav>
+      <h1>Wedding RSVP Calculator</h1>
+      <p class="subtitle">Predict your actual wedding attendance</p>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-content" data-ad="wedding-rsvp-calculator-top" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="calc-layout">
+      <div class="calc-form-wrapper">
+        <form id="calcForm" class="calc-form" data-tool-id="wedding-rsvp-calculator" data-result-type="attendance">
+          <h2>✉️ Enter Your Details</h2>
+          <div class="form-group">
+      <label for="totalInvited">Total Guests Invited <span style="color:#e53935">*</span></label>
+      <input type="number" id="totalInvited" name="totalInvited" placeholder="150" min="10" max="500" step="1" required>
+    </div><div class="form-group">
+      <label for="localGuests">Local Guests (%) <span style="color:#e53935">*</span></label>
+      <input type="number" id="localGuests" name="localGuests" placeholder="60"  max="100" step="5" required>
+    </div><div class="form-group">
+      <label for="outOfTownGuests">Out-of-Town Guests (%) <span style="color:#e53935">*</span></label>
+      <input type="number" id="outOfTownGuests" name="outOfTownGuests" placeholder="30"  max="100" step="5" required>
+    </div><div class="form-group">
+      <label for="internationalGuests">International Guests (%) <span style="color:#e53935">*</span></label>
+      <input type="number" id="internationalGuests" name="internationalGuests" placeholder="10"  max="100" step="5" required>
+    </div><div class="form-group">
+        <label for="isDestination">Destination Wedding? <span style="color:#e53935">*</span></label>
+        <select id="isDestination" name="isDestination" required>
+          <option value="">Select...</option>
+          <option value="Yes">Yes</option><option value="No">No</option>
+        </select>
+      </div>
+          <button type="submit" class="calc-btn">✨ Calculate with AI</button>
+        </form>
+      </div>
+      <div class="calc-results">
+        <div id="resultsPanel" class="results-panel" style="display:none"></div>
+        <div class="ad-slot ad-slot-sidebar" data-ad="wedding-rsvp-calculator-sidebar" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-slot-content" data-ad="wedding-rsvp-calculator-mid" aria-hidden="true"></div>
+
+  <section class="faq-section">
+    <div class="container">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">Whats the average wedding RSVP acceptance rate? <span class="icon">+</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Local guests accept at about 85%, out-of-town at 65%, and international guests at about 40%.</div></div>
+    </div>
+  
+    <div class="faq-item">
+      <button class="faq-question">When should I send RSVP reminders? <span class="icon">+</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Send a gentle reminder 2 weeks before the RSVP deadline, and follow up individually 1 week after.</div></div>
+    </div>
+  </div>
+    </div>
+  </section>
+
+  <section class="related-tools">
+    <div class="container">
+      <h2>Related Calculators</h2>
+      <div class="tools-grid" style="grid-template-columns:repeat(auto-fill,minmax(250px,1fr))">
+    <a href="/tools/wedding-guest-list-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">📝</div>
+      <h3>Wedding Guest List Calculator</h3>
+      <p>Find the perfect guest count for your budget and venue</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-plus-one-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">💑</div>
+      <h3>Wedding Plus-One Calculator</h3>
+      <p>Manage plus-ones without blowing your budget</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-seating-chart-planner.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🪑</div>
+      <h3>Wedding Seating Chart Planner</h3>
+      <p>Figure out your table count and seating layout</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-photobooth-cost-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">📸</div>
+      <h3>Wedding Photo Booth Cost Calculator</h3>
+      <p>Add fun memories without breaking the bank</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-dinner-cost-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🥘</div>
+      <h3>Wedding Dinner Cost Calculator</h3>
+      <p>Budget your reception dinner with confidence</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-invitation-cost-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">💌</div>
+      <h3>Wedding Invitation Cost Calculator</h3>
+      <p>Budget your wedding stationery from invites to thank-yous</p>
+      <span class="arrow">Try it</span>
+    </a>
+  </div>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-footer" data-ad="wedding-rsvp-calculator-footer" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="/" class="logo"><span class="logo-icon">AI</span> AI Wedding Calc</a>
+        <p>Free AI-powered wedding calculators to help you plan your perfect day. Trusted by 100,000+ couples across the US.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Budget Tools</h4>
+        <ul><li><a href="/tools/wedding-budget-calculator.html">Budget Calc</a></li><li><a href="/tools/wedding-cost-estimator.html">Cost Estimator</a></li><li><a href="/tools/wedding-savings-calculator.html">Savings Calc</a></li><li><a href="/tools/honeymoon-budget-calculator.html">Honeymoon Calc</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Food & Drinks</h4>
+        <ul><li><a href="/tools/wedding-catering-calculator.html">Catering Calc</a></li><li><a href="/tools/wedding-alcohol-calculator.html">Alcohol Calc</a></li><li><a href="/tools/wedding-bar-cost-calculator.html">Bar Cost</a></li><li><a href="/tools/wedding-cake-calculator.html">Cake Calc</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Planning</h4>
+        <ul><li><a href="/tools/wedding-timeline-calculator.html">Timeline</a></li><li><a href="/tools/wedding-vendor-comparison-tool.html">Vendor Compare</a></li><li><a href="/tools/wedding-checklist-calculator.html">Checklist</a></li><li><a href="/tools/wedding-officiant-cost-calculator.html">Officiant Cost</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 AI Wedding Calc. All rights reserved.</span>
+      <span>Made with love for couples planning their big day</span>
+    </div>
+  </div>
+</footer>
+
+  <script src="/js/calculator-engine.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

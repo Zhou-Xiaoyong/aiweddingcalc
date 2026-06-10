@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Plus-One Calculator - How Many Plus-Ones to Allow | AI Wedding Calc</title>
+  <meta name="description" content="Calculate the impact of plus-one invitations on your guest count and budget. Get AI advice on setting plus-one policies.">
+  <meta name="keywords" content="wedding plus one calculator, wedding plus one etiquette, wedding plus one policy, how many plus ones at wedding, wedding guest plus one">
+  <link rel="canonical" href="https://aiweddingcalc.com/tools/wedding-plus-one-calculator.html">
+  <meta property="og:title" content="Wedding Plus-One Calculator | AI Wedding Calc">
+  <meta property="og:description" content="Calculate the impact of plus-one invitations on your guest count and budget. Get AI advice on setting plus-one policies.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aiweddingcalc.com/tools/wedding-plus-one-calculator.html">
+  <meta property="og:site_name" content="AI Wedding Calc">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wedding Plus-One Calculator | AI Wedding Calc">
+  <meta name="twitter:description" content="Calculate the impact of plus-one invitations on your guest count and budget. Get AI advice on setting plus-one policies.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Wedding Plus-One Calculator","url":"https://aiweddingcalc.com/tools/wedding-plus-one-calculator.html","description":"Calculate the impact of plus-one invitations on your guest count and budget. Get AI advice on setting plus-one policies.","applicationCategory":"LifestyleApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AI Wedding Calc","url":"https://aiweddingcalc.com"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do all single guests get a plus-one?","acceptedAnswer":{"@type":"Answer","text":"Traditionally, only guests in serious relationships or those in the wedding party receive plus-ones. Its your choice!"}},{"@type":"Question","name":"How much do plus-ones add to the budget?","acceptedAnswer":{"@type":"Answer","text":"Each plus-one typically adds $125-$200 to your catering and bar costs alone."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aiweddingcalc.com/"},{"@type":"ListItem","position":2,"name":"Guest Management","item":"https://aiweddingcalc.com/#tools"},{"@type":"ListItem","position":3,"name":"Wedding Plus-One Calculator","item":"https://aiweddingcalc.com/tools/wedding-plus-one-calculator.html"}]}</script>
+</head>
+<body>
+  <header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-icon">AI</span> AI Wedding Calc</a>
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#tools">All Calculators</a></li>
+        <li><a href="/tools/wedding-budget-calculator.html">Budget Calculator</a></li>
+        <li><a href="/tools/wedding-catering-calculator.html">Catering</a></li>
+        <li><a href="/tools/wedding-alcohol-calculator.html">Alcohol</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="document.getElementById('mainNav').classList.toggle('active')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+  <section class="tool-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="sep"></span>
+        <a href="/#tools">Guest Management</a>
+        <span class="sep"></span>
+        <span>Wedding Plus-One Calculator</span>
+      </nav>
+      <h1>Wedding Plus-One Calculator</h1>
+      <p class="subtitle">Manage plus-ones without blowing your budget</p>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-content" data-ad="wedding-plus-one-calculator-top" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="calc-layout">
+      <div class="calc-form-wrapper">
+        <form id="calcForm" class="calc-form" data-tool-id="wedding-plus-one-calculator" data-result-type="total">
+          <h2>💑 Enter Your Details</h2>
+          <div class="form-group">
+      <label for="singleGuests">Single Guests Invited <span style="color:#e53935">*</span></label>
+      <input type="number" id="singleGuests" name="singleGuests" placeholder="30"  max="200" step="1" required>
+    </div><div class="form-group">
+      <label for="costPerGuest">Cost Per Guest ($) <span style="color:#e53935">*</span></label>
+      <input type="number" id="costPerGuest" name="costPerGuest" placeholder="150" min="10" max="1000" step="10" required>
+    </div><div class="form-group">
+        <label for="plusOnePolicy">Plus-One Policy <span style="color:#e53935">*</span></label>
+        <select id="plusOnePolicy" name="plusOnePolicy" required>
+          <option value="">Select...</option>
+          <option value="All singles get plus-ones">All singles get plus-ones</option><option value="Only serious relationships">Only serious relationships</option><option value="Wedding party only">Wedding party only</option><option value="No plus-ones">No plus-ones</option>
+        </select>
+      </div>
+          <button type="submit" class="calc-btn">✨ Calculate with AI</button>
+        </form>
+      </div>
+      <div class="calc-results">
+        <div id="resultsPanel" class="results-panel" style="display:none"></div>
+        <div class="ad-slot ad-slot-sidebar" data-ad="wedding-plus-one-calculator-sidebar" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-slot-content" data-ad="wedding-plus-one-calculator-mid" aria-hidden="true"></div>
+
+  <section class="faq-section">
+    <div class="container">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">Do all single guests get a plus-one? <span class="icon">+</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Traditionally, only guests in serious relationships or those in the wedding party receive plus-ones. Its your choice!</div></div>
+    </div>
+  
+    <div class="faq-item">
+      <button class="faq-question">How much do plus-ones add to the budget? <span class="icon">+</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Each plus-one typically adds $125-$200 to your catering and bar costs alone.</div></div>
+    </div>
+  </div>
+    </div>
+  </section>
+
+  <section class="related-tools">
+    <div class="container">
+      <h2>Related Calculators</h2>
+      <div class="tools-grid" style="grid-template-columns:repeat(auto-fill,minmax(250px,1fr))">
+    <a href="/tools/wedding-guest-list-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">📝</div>
+      <h3>Wedding Guest List Calculator</h3>
+      <p>Find the perfect guest count for your budget and venue</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-rsvp-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">✉️</div>
+      <h3>Wedding RSVP Calculator</h3>
+      <p>Predict your actual wedding attendance</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-seating-chart-planner.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🪑</div>
+      <h3>Wedding Seating Chart Planner</h3>
+      <p>Figure out your table count and seating layout</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-venue-cost-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🏛️</div>
+      <h3>Wedding Venue Cost Calculator</h3>
+      <p>Know what youll really pay for your wedding venue</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-photobooth-cost-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">📸</div>
+      <h3>Wedding Photo Booth Cost Calculator</h3>
+      <p>Add fun memories without breaking the bank</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-hair-makeup-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">💄</div>
+      <h3>Wedding Hair &amp; Makeup Calculator</h3>
+      <p>Budget for professional beauty services on your big day</p>
+      <span class="arrow">Try it</span>
+    </a>
+  </div>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-footer" data-ad="wedding-plus-one-calculator-footer" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="/" class="logo"><span class="logo-icon">AI</span> AI Wedding Calc</a>
+        <p>Free AI-powered wedding calculators to help you plan your perfect day. Trusted by 100,000+ couples across the US.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Budget Tools</h4>
+        <ul><li><a href="/tools/wedding-budget-calculator.html">Budget Calc</a></li><li><a href="/tools/wedding-cost-estimator.html">Cost Estimator</a></li><li><a href="/tools/wedding-savings-calculator.html">Savings Calc</a></li><li><a href="/tools/honeymoon-budget-calculator.html">Honeymoon Calc</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Food & Drinks</h4>
+        <ul><li><a href="/tools/wedding-catering-calculator.html">Catering Calc</a></li><li><a href="/tools/wedding-alcohol-calculator.html">Alcohol Calc</a></li><li><a href="/tools/wedding-bar-cost-calculator.html">Bar Cost</a></li><li><a href="/tools/wedding-cake-calculator.html">Cake Calc</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Planning</h4>
+        <ul><li><a href="/tools/wedding-timeline-calculator.html">Timeline</a></li><li><a href="/tools/wedding-vendor-comparison-tool.html">Vendor Compare</a></li><li><a href="/tools/wedding-checklist-calculator.html">Checklist</a></li><li><a href="/tools/wedding-officiant-cost-calculator.html">Officiant Cost</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 AI Wedding Calc. All rights reserved.</span>
+      <span>Made with love for couples planning their big day</span>
+    </div>
+  </div>
+</footer>
+
+  <script src="/js/calculator-engine.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

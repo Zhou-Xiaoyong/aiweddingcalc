@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Registry Calculator - How Many Items to Register For | AI Wedding Calc</title>
+  <meta name="description" content="Calculate how many items to put on your wedding registry.">
+  <meta name="keywords" content="wedding registry calculator, how many items on wedding registry, wedding registry guide, wedding registry budget, wedding registry price points">
+  <link rel="canonical" href="https://aiweddingcalc.com/tools/wedding-registry-calculator.html">
+  <meta property="og:title" content="Wedding Registry Calculator | AI Wedding Calc">
+  <meta property="og:description" content="Calculate how many items to put on your wedding registry.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aiweddingcalc.com/tools/wedding-registry-calculator.html">
+  <meta property="og:site_name" content="AI Wedding Calc">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wedding Registry Calculator | AI Wedding Calc">
+  <meta name="twitter:description" content="Calculate how many items to put on your wedding registry.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Wedding Registry Calculator","url":"https://aiweddingcalc.com/tools/wedding-registry-calculator.html","description":"Calculate how many items to put on your wedding registry.","applicationCategory":"LifestyleApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AI Wedding Calc","url":"https://aiweddingcalc.com"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many items should I put on my wedding registry?","acceptedAnswer":{"@type":"Answer","text":"Register for 2-3 items per guest. For 120 guests, aim for 240-360 items across all price ranges."}},{"@type":"Question","name":"What price points should I include?","acceptedAnswer":{"@type":"Answer","text":"Include items at various price points: 30% under $50, 40% $50-$150, 20% $150-$300, and 10% $300+."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aiweddingcalc.com/"},{"@type":"ListItem","position":2,"name":"Gifts & Favors","item":"https://aiweddingcalc.com/#tools"},{"@type":"ListItem","position":3,"name":"Wedding Registry Calculator","item":"https://aiweddingcalc.com/tools/wedding-registry-calculator.html"}]}</script>
+</head>
+<body>
+  <header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-icon">AI</span> AI Wedding Calc</a>
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#tools">All Calculators</a></li>
+        <li><a href="/tools/wedding-budget-calculator.html">Budget Calculator</a></li>
+        <li><a href="/tools/wedding-catering-calculator.html">Catering</a></li>
+        <li><a href="/tools/wedding-alcohol-calculator.html">Alcohol</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="document.getElementById('mainNav').classList.toggle('active')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+  <section class="tool-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="sep"></span>
+        <a href="/#tools">Gifts &amp; Favors</a>
+        <span class="sep"></span>
+        <span>Wedding Registry Calculator</span>
+      </nav>
+      <h1>Wedding Registry Calculator</h1>
+      <p class="subtitle">Build a registry that covers what you actually need</p>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-content" data-ad="wedding-registry-calculator-top" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="calc-layout">
+      <div class="calc-form-wrapper">
+        <form id="calcForm" class="calc-form" data-tool-id="wedding-registry-calculator" data-result-type="registry">
+          <h2>📋 Enter Your Details</h2>
+          <div class="form-group">
+      <label for="guestCount">Number of Guests <span style="color:#e53935">*</span></label>
+      <input type="number" id="guestCount" name="guestCount" placeholder="120" min="10" max="500" step="1" required>
+    </div><div class="form-group">
+        <label for="livingSituation">Current Living Situation <span style="color:#e53935">*</span></label>
+        <select id="livingSituation" name="livingSituation" required>
+          <option value="">Select...</option>
+          <option value="Starting Fresh">Starting Fresh</option><option value="Already Furnished">Already Furnished</option><option value="Upgrading">Upgrading</option><option value="Downsizing">Downsizing</option>
+        </select>
+      </div><div class="form-group">
+        <label for="priceRange">Preferred Gift Price Range <span style="color:#e53935">*</span></label>
+        <select id="priceRange" name="priceRange" required>
+          <option value="">Select...</option>
+          <option value="Budget ($10-50)">Budget ($10-50)</option><option value="Moderate ($25-150)">Moderate ($25-150)</option><option value="Premium ($50-300)">Premium ($50-300)</option><option value="Mixed Range">Mixed Range</option>
+        </select>
+      </div>
+          <button type="submit" class="calc-btn">✨ Calculate with AI</button>
+        </form>
+      </div>
+      <div class="calc-results">
+        <div id="resultsPanel" class="results-panel" style="display:none"></div>
+        <div class="ad-slot ad-slot-sidebar" data-ad="wedding-registry-calculator-sidebar" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad-slot ad-slot-content" data-ad="wedding-registry-calculator-mid" aria-hidden="true"></div>
+
+  <section class="faq-section">
+    <div class="container">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">How many items should I put on my wedding registry? <span class="icon">+</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Register for 2-3 items per guest. For 120 guests, aim for 240-360 items across all price ranges.</div></div>
+    </div>
+  
+    <div class="faq-item">
+      <button class="faq-question">What price points should I include? <span class="icon">+</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Include items at various price points: 30% under $50, 40% $50-$150, 20% $150-$300, and 10% $300+.</div></div>
+    </div>
+  </div>
+    </div>
+  </section>
+
+  <section class="related-tools">
+    <div class="container">
+      <h2>Related Calculators</h2>
+      <div class="tools-grid" style="grid-template-columns:repeat(auto-fill,minmax(250px,1fr))">
+    <a href="/tools/wedding-favor-cost-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🎁</div>
+      <h3>Wedding Favor Cost Calculator</h3>
+      <p>Give your guests something to remember within budget</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-gift-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🎀</div>
+      <h3>Wedding Gift Calculator</h3>
+      <p>Figure out the right gift amount for any wedding</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-party-gift-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">🥂</div>
+      <h3>Wedding Party Gift Calculator</h3>
+      <p>Show your bridal party some love within budget</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-flower-cost-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">💐</div>
+      <h3>Wedting Flower Cost Calculator</h3>
+      <p>Budget your wedding florals from bouquets to centerpieces</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-tent-size-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">⛺</div>
+      <h3>Wedding Tent Size Calculator</h3>
+      <p>Find the perfect tent size for your outdoor wedding</p>
+      <span class="arrow">Try it</span>
+    </a>
+  
+    <a href="/tools/wedding-guest-list-calculator.html" class="tool-card" style="max-width:300px">
+      <div class="tool-card-icon">📝</div>
+      <h3>Wedding Guest List Calculator</h3>
+      <p>Find the perfect guest count for your budget and venue</p>
+      <span class="arrow">Try it</span>
+    </a>
+  </div>
+    </div>
+  </section>
+
+  <div class="ad-slot ad-slot-footer" data-ad="wedding-registry-calculator-footer" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="/" class="logo"><span class="logo-icon">AI</span> AI Wedding Calc</a>
+        <p>Free AI-powered wedding calculators to help you plan your perfect day. Trusted by 100,000+ couples across the US.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Budget Tools</h4>
+        <ul><li><a href="/tools/wedding-budget-calculator.html">Budget Calc</a></li><li><a href="/tools/wedding-cost-estimator.html">Cost Estimator</a></li><li><a href="/tools/wedding-savings-calculator.html">Savings Calc</a></li><li><a href="/tools/honeymoon-budget-calculator.html">Honeymoon Calc</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Food & Drinks</h4>
+        <ul><li><a href="/tools/wedding-catering-calculator.html">Catering Calc</a></li><li><a href="/tools/wedding-alcohol-calculator.html">Alcohol Calc</a></li><li><a href="/tools/wedding-bar-cost-calculator.html">Bar Cost</a></li><li><a href="/tools/wedding-cake-calculator.html">Cake Calc</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Planning</h4>
+        <ul><li><a href="/tools/wedding-timeline-calculator.html">Timeline</a></li><li><a href="/tools/wedding-vendor-comparison-tool.html">Vendor Compare</a></li><li><a href="/tools/wedding-checklist-calculator.html">Checklist</a></li><li><a href="/tools/wedding-officiant-cost-calculator.html">Officiant Cost</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 AI Wedding Calc. All rights reserved.</span>
+      <span>Made with love for couples planning their big day</span>
+    </div>
+  </div>
+</footer>
+
+  <script src="/js/calculator-engine.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
