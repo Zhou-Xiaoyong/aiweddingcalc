@@ -384,7 +384,21 @@ function renderDessert(result, engine) {
 }
 
 function renderComparison(result, engine) {
-  return renderTotal(result, engine);
+  if (!result.items) return renderTotal(result, engine);
+  let html = `<div class="result-total"><div class="amount">${engine.formatCurrency(result.total)}</div><div class="label">Average Quote</div></div>`;
+  html += '<ul class="breakdown-list">';
+  result.items.forEach(item => {
+    const highlight = item.name === 'Average Quote' ? ' style="font-weight:600;color:#b76e79"' : '';
+    html += `<li class="breakdown-item"${highlight}><span class="name"><span class="dot"></span>${item.name}</span><span class="value">${engine.formatCurrency(item.amount)}</span></li>`;
+  });
+  html += '</ul>';
+  if (result.range !== undefined) {
+    html += `<div style="text-align:center;margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0f0;font-size:0.85rem;color:#737373;">Quote range: <strong>${engine.formatCurrency(result.low)}</strong> — <strong>${engine.formatCurrency(result.high)}</strong> (${engine.formatCurrency(result.range)} spread)</div>`;
+  }
+  if (result.marketRef) {
+    html += `<div style="text-align:center;margin-top:0.5rem;font-size:0.85rem;color:#737373;">Market typical: <strong>${engine.formatCurrency(result.marketRef.typical)}</strong> (range: ${engine.formatCurrency(result.marketRef.low)}–${engine.formatCurrency(result.marketRef.high)})</div>`;
+  }
+  return html;
 }
 
 function renderROI(result, engine) {
@@ -392,11 +406,33 @@ function renderROI(result, engine) {
 }
 
 function renderTimeline(result, engine) {
-  return renderTotal(result, engine);
+  if (!result.events) return renderTotal(result, engine);
+  let html = `<div class="result-total"><div class="amount">${result.total}</div><div class="label">Minutes of Wedding Day</div></div>`;
+  html += '<div class="timeline-list">';
+  result.events.forEach((evt, i) => {
+    html += `<div class="breakdown-item" style="padding:0.5rem 0;display:flex;gap:0.75rem;align-items:flex-start">`;
+    html += `<div style="min-width:80px;font-weight:600;font-size:0.85rem;color:#b76e79">${evt.time}</div>`;
+    html += `<div><div style="font-weight:500;font-size:0.9rem">${evt.name}</div><div style="font-size:0.75rem;color:#737373">${evt.duration}</div></div>`;
+    html += `</div>`;
+  });
+  html += '</div>';
+  return html;
 }
 
 function renderChecklist(result, engine) {
-  return renderTotal(result, engine);
+  if (!result.checklist) return renderTotal(result, engine);
+  let html = `<div class="result-total"><div class="amount">${result.total}</div><div class="label">Tasks on Your Checklist</div></div>`;
+  html += '<div class="checklist-list">';
+  result.checklist.forEach(phase => {
+    html += `<div style="margin-bottom:1rem"><div style="font-weight:600;font-size:0.9rem;color:#b76e79;margin-bottom:0.4rem;padding:0.4rem 0;border-bottom:1px solid #f0f0f0">${phase.phase}</div>`;
+    html += '<ul style="list-style:none;padding:0;margin:0">';
+    phase.tasks.forEach(task => {
+      html += `<li style="padding:0.25rem 0 0.25rem 1.5rem;position:relative;font-size:0.85rem"><span style="position:absolute;left:0;top:0.35rem;width:12px;height:12px;border:1.5px solid #b76e79;border-radius:2px;display:inline-block"></span>${task}</li>`;
+    });
+    html += '</ul></div>';
+  });
+  html += '</div>';
+  return html;
 }
 
 function renderAISuggestions(suggestions) {

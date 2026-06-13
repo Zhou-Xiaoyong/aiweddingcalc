@@ -23,6 +23,35 @@ const US_WEDDING_DATA = {
   alcoholPPH: { 'Full Open Bar': 18, 'Beer & Wine Only': 10, 'Signature Cocktails + Beer/Wine': 14, 'Cash Bar': 0 },
   barPackagePP: { 'Open Bar (per person)': 55, 'Consumption Bar': 45, 'BYOB': 20, 'Limited Bar': 35 },
   dressCost: { 'Simple/Minimalist': 800, 'Classic/A-Line': 1500, 'Ballgown': 2500, 'Designer/Luxury': 5000 },
+  hairCost: { 'Updo': 200, 'Half-Up/Half-Down': 175, 'Blowout': 125, 'Braided Style': 225 },
+  makeupCost: { 'Full Glam': 250, 'Natural': 175, 'Airbrush': 300 },
+  bridesmaidHairMakeupPP: 175,
+  motherHairMakeupPP: 165,
+  trialHairCost: 150,
+  trialMakeupCost: 150,
+  photoBaseHours: { 'Budget': 6, 'Standard': 8, 'Premium': 10 },
+  photoBaseCost: { 'Budget': 1800, 'Standard': 3000, 'Premium': 5000 },
+  photoExtraHourPP: { 'Budget': 200, 'Standard': 300, 'Premium': 450 },
+  secondShooterCost: { 'Budget': 400, 'Standard': 600, 'Premium': 900 },
+  engagementShootCost: { 'Budget': 250, 'Standard': 400, 'Premium': 650 },
+  photoAlbumCost: { 'Budget': 500, 'Standard': 800, 'Premium': 1500 },
+  inviteInsertCost: { 'RSVP Card Only': 0.5, 'RSVP + Details': 1.0, 'RSVP + Details + Map': 1.5, 'Full Suite': 2.5 },
+  envelopeLiningCost: 0.5,
+  inviteAssemblyCost: 0.5,
+  postageCost: 1.32,
+  alterationsCost: { 'Simple/Minimalist': 200, 'Classic/A-Line': 300, 'Ballgown': 450, 'Designer/Luxury': 600 },
+  dressAccessories: { veil: 200, shoes: 120, jewelry: 100, belt: 100, headpiece: 150 },
+  suitAccessories: { shoes: 120, tie: 40, pocketSquare: 20, cufflinks: 40, vest: 80 },
+  eventBudgetSplit: {
+    'Corporate Conference': [{ name: 'Venue', pct: 0.25 }, { name: 'Catering', pct: 0.20 }, { name: 'AV & Technology', pct: 0.15 }, { name: 'Speakers/Entertainment', pct: 0.10 }, { name: 'Marketing', pct: 0.10 }, { name: 'Staff & Coordination', pct: 0.08 }, { name: 'Printed Materials', pct: 0.05 }, { name: 'Miscellaneous', pct: 0.07 }],
+    'Gala/Fundraiser': [{ name: 'Venue', pct: 0.20 }, { name: 'Catering & Bar', pct: 0.30 }, { name: 'Entertainment', pct: 0.12 }, { name: 'Decor & Florals', pct: 0.10 }, { name: 'Marketing & Invitations', pct: 0.08 }, { name: 'Staff & Coordination', pct: 0.08 }, { name: 'Auction Items', pct: 0.07 }, { name: 'Miscellaneous', pct: 0.05 }],
+    'Birthday Party': [{ name: 'Venue', pct: 0.20 }, { name: 'Catering & Drinks', pct: 0.30 }, { name: 'Entertainment', pct: 0.15 }, { name: 'Decor', pct: 0.10 }, { name: 'Cake & Desserts', pct: 0.08 }, { name: 'Invitations', pct: 0.05 }, { name: 'Party Favors', pct: 0.05 }, { name: 'Miscellaneous', pct: 0.07 }],
+    'Anniversary Celebration': [{ name: 'Venue', pct: 0.22 }, { name: 'Catering & Bar', pct: 0.28 }, { name: 'Entertainment', pct: 0.12 }, { name: 'Decor & Florals', pct: 0.10 }, { name: 'Photography', pct: 0.08 }, { name: 'Invitations', pct: 0.05 }, { name: 'Gifts & Favors', pct: 0.07 }, { name: 'Miscellaneous', pct: 0.08 }],
+    'Holiday Party': [{ name: 'Venue', pct: 0.22 }, { name: 'Catering & Bar', pct: 0.30 }, { name: 'Decor & Theme', pct: 0.12 }, { name: 'Entertainment', pct: 0.10 }, { name: 'Activities & Games', pct: 0.08 }, { name: 'Invitations', pct: 0.03 }, { name: 'Party Favors', pct: 0.05 }, { name: 'Miscellaneous', pct: 0.10 }],
+    'Graduation Party': [{ name: 'Venue', pct: 0.18 }, { name: 'Catering', pct: 0.30 }, { name: 'Decor', pct: 0.12 }, { name: 'Entertainment', pct: 0.10 }, { name: 'Cake & Desserts', pct: 0.08 }, { name: 'Invitations', pct: 0.05 }, { name: 'Photo Area', pct: 0.07 }, { name: 'Miscellaneous', pct: 0.10 }]
+  },
+  eventCostPP: { 'Corporate Conference': 150, 'Gala/Fundraiser': 200, 'Birthday Party': 60, 'Anniversary Celebration': 120, 'Holiday Party': 80, 'Graduation Party': 45 },
+  eventDurationMult: { '2-3 hours': 0.7, 'Half day': 0.9, 'Full day': 1.0, 'Multi-day': 1.6 },
   photoPackages: { 'Budget': 1800, 'Standard': 3000, 'Premium': 5000 },
   djPackages: { 'Basic (Music Only)': 800, 'Standard (MC + Music)': 1200, 'Premium (MC + Lighting + Effects)': 2200 },
   bandPP: { 'Solo/Duo': 400, 'Trio': 700, '4-5 Piece': 1200, '6-8 Piece': 2500, '9+ Piece': 4500 },
@@ -394,13 +423,18 @@ class CalculatorEngine {
         const base = (styleMult[values.boxStyle] || 55) * (values.bridesmaidCount || 5);
         return values.includeApparel === 'Yes' ? base + (values.bridesmaidCount || 5) * 45 : base;
       },
-      'wedding-accessories-calculator': () => {
+      'wedding-accessories-budget-calculator': () => {
         let total = 0;
-        if (values.needVeil?.includes('Yes')) total += values.needVeil === 'Yes - Both' ? 350 : 180;
-        if (values.needJewelry?.includes('Yes')) total += values.needJewelry === 'Yes - Earrings Only' ? 80 : 200;
-        if (values.needShoes?.includes('Yes')) total += values.needShoes === 'Yes - Designer' ? 250 : 100;
-        if (values.needBelt === 'Yes') total += 120;
-        return total;
+        const items = [];
+        const veilCost = { 'Yes - Cathedral Veil': 350, 'Yes - Fingertip Veil': 200, 'Yes - Birdcage/Blusher': 120, 'Hair Piece Only': 150 };
+        if (veilCost[values.needVeil]) { const c = veilCost[values.needVeil]; total += c; items.push({ name: 'Veil/Hair Piece', amount: c }); }
+        const shoeCost = { 'Yes - Designer': 250, 'Yes - Standard': 120 };
+        if (shoeCost[values.needShoes]) { const c = shoeCost[values.needShoes]; total += c; items.push({ name: 'Bridal Shoes', amount: c }); }
+        const jewelryCost = { 'Yes - Full Set': 250, 'Yes - Earrings Only': 80, 'Yes - Necklace + Earrings': 180 };
+        if (jewelryCost[values.needJewelry]) { const c = jewelryCost[values.needJewelry]; total += c; items.push({ name: 'Bridal Jewelry', amount: c }); }
+        if (values.needBelt === 'Yes') { total += 120; items.push({ name: 'Dress Sash/Belt', amount: 120 }); }
+        const breakdown = items.map(i => ({ ...i, pct: Math.round(i.amount / total * 100) }));
+        return { total, breakdown, suggestions: this.getAccessoriesSuggestions(total) };
       },
       'wedding-videography-cost-calculator': () => {
         const pkgMult = { 'Highlight Reel (3-5 min)': 1500, 'Ceremony + Highlights': 2500, 'Full Documentary': 3500, 'Same-Day Edit': 4500 };
@@ -501,6 +535,299 @@ class CalculatorEngine {
         const props = values.includeProps === 'Yes' ? 150 : 0;
         const album = values.includeAlbum === 'Yes' ? 200 : 0;
         return base * (hours / 3) + props + album;
+      },
+      'wedding-dress-budget-calculator': () => {
+        const dressCost = this.data.dressCost[values.dressStyle] || 1500;
+        const alterations = values.includesAlterations === 'Yes' ? (this.data.alterationsCost[values.dressStyle] || 300) : 0;
+        const accessories = values.includesAccessories === 'Yes' ? (this.data.dressAccessories.veil + this.data.dressAccessories.shoes + this.data.dressAccessories.jewelry) : 0;
+        const total = dressCost + alterations + accessories;
+        const budgetPct = Math.round((total / (values.totalBudget || 30000)) * 100);
+        const breakdown = [
+          { name: 'Wedding Dress', amount: dressCost, pct: Math.round(dressCost / total * 100) },
+          { name: 'Alterations', amount: alterations, pct: Math.round(alterations / total * 100) },
+          { name: 'Accessories (Veil, Shoes, Jewelry)', amount: accessories, pct: Math.round(accessories / total * 100) }
+        ];
+        return { total, breakdown, budgetPct, suggestions: this.getDressSuggestions(values.dressStyle, budgetPct) };
+      },
+      'wedding-suit-cost-calculator': () => {
+        const groomCost = this.data.suitCosts[values.groomOption] || 450;
+        const groomsmanCostPer = values.groomsmanOption === 'Rent Tuxedo' ? 200 : values.groomsmanOption === 'Buy Suit' ? 450 : 180;
+        const groomsmanCount = values.groomsmanCount || 0;
+        const totalGroomsmanCost = groomsmanCostPer * groomsmanCount;
+        const groomAcc = this.data.suitAccessories.shoes + this.data.suitAccessories.tie + this.data.suitAccessories.pocketSquare;
+        const groomsmanAcc = (this.data.suitAccessories.tie + this.data.suitAccessories.pocketSquare + this.data.suitAccessories.cufflinks) * groomsmanCount;
+        const total = groomCost + totalGroomsmanCost + groomAcc + groomsmanAcc;
+        const breakdown = [
+          { name: "Groom's Attire", amount: groomCost, pct: Math.round(groomCost / total * 100) },
+          { name: 'Groom Accessories', amount: groomAcc, pct: Math.round(groomAcc / total * 100) },
+          { name: `Groomsmen Attire (${groomsmanCount})`, amount: totalGroomsmanCost, pct: Math.round(totalGroomsmanCost / total * 100) },
+          { name: 'Groomsmen Accessories', amount: groomsmanAcc, pct: Math.round(groomsmanAcc / total * 100) }
+        ];
+        return { total, breakdown, suggestions: this.getSuitSuggestions(values.groomOption, groomsmanCount) };
+      },
+      'wedding-hair-makeup-calculator': () => {
+        const brideHair = this.data.hairCost[values.brideHair] || 200;
+        const brideMakeup = this.data.makeupCost[values.brideMakeup] || 200;
+        const bridesmaidCount = values.bridesmaidCount || 0;
+        const motherCount = values.mothOfBride || 0;
+        const bridesmaidCost = bridesmaidCount * this.data.bridesmaidHairMakeupPP;
+        const motherCost = motherCount * this.data.motherHairMakeupPP;
+        const trialCost = values.trialIncluded === 'Yes' ? (this.data.trialHairCost + this.data.trialMakeupCost) : 0;
+        const travelFee = 0;
+        const total = brideHair + brideMakeup + bridesmaidCost + motherCost + trialCost;
+        const breakdown = [
+          { name: "Bride's Hair", amount: brideHair, pct: Math.round(brideHair / total * 100) },
+          { name: "Bride's Makeup", amount: brideMakeup, pct: Math.round(brideMakeup / total * 100) },
+          { name: `Bridesmaids (${bridesmaidCount})`, amount: bridesmaidCost, pct: Math.round(bridesmaidCost / total * 100) },
+          { name: `Mothers (${motherCount})`, amount: motherCost, pct: Math.round(motherCost / total * 100) },
+          { name: 'Trial Sessions', amount: trialCost, pct: Math.round(trialCost / total * 100) }
+        ];
+        return { total, breakdown, suggestions: this.getHairMakeupSuggestions(bridesmaidCount, values.trialIncluded) };
+      },
+      'wedding-photography-budget-calculator': () => {
+        const pkgLevel = values.packageLevel || 'Standard';
+        const baseCost = this.data.photoBaseCost[pkgLevel] || 3000;
+        const baseHours = this.data.photoBaseHours[pkgLevel] || 8;
+        const coverageHours = parseInt(values.coverageHours) || 8;
+        const extraHours = Math.max(0, coverageHours - baseHours);
+        const extraCost = extraHours * (this.data.photoExtraHourPP[pkgLevel] || 300);
+        const secondShooter = values.secondShooter === 'Yes' ? (this.data.secondShooterCost[pkgLevel] || 600) : 0;
+        const engagement = values.engagementShoot === 'Yes' ? (this.data.engagementShootCost[pkgLevel] || 400) : 0;
+        const album = values.albumIncluded === 'Yes' ? (this.data.photoAlbumCost[pkgLevel] || 800) : 0;
+        const total = baseCost + extraCost + secondShooter + engagement + album;
+        const breakdown = [
+          { name: `Base Package (${baseHours}h)`, amount: baseCost, pct: Math.round(baseCost / total * 100) },
+          { name: `Extra Coverage (${extraHours}h)`, amount: extraCost, pct: Math.round(extraCost / total * 100) },
+          { name: 'Second Shooter', amount: secondShooter, pct: Math.round(secondShooter / total * 100) },
+          { name: 'Engagement Shoot', amount: engagement, pct: Math.round(engagement / total * 100) },
+          { name: 'Wedding Album', amount: album, pct: Math.round(album / total * 100) }
+        ];
+        return { total, breakdown, suggestions: this.getPhotographySuggestions(pkgLevel, coverageHours, values.secondShooter) };
+      },
+      'wedding-invitation-cost-calculator': () => {
+        const count = values.invitationCount || 100;
+        const printCost = this.data.inviteCost[values.printingMethod] || 4.5;
+        const insertCost = this.data.inviteInsertCost[values.inserts] || 0.5;
+        const liningCost = values.envelopeLining === 'Yes' ? this.data.envelopeLiningCost : 0;
+        const assemblyCost = this.data.inviteAssemblyCost;
+        const postageCost = this.data.postageCost;
+        const perInvite = printCost + insertCost + liningCost + assemblyCost + postageCost;
+        const total = Math.round(count * perInvite);
+        const breakdown = [
+          { name: 'Printing & Paper', amount: Math.round(count * printCost), pct: Math.round(count * printCost / total * 100) },
+          { name: 'Inserts', amount: Math.round(count * insertCost), pct: Math.round(count * insertCost / total * 100) },
+          { name: 'Envelope Lining', amount: Math.round(count * liningCost), pct: Math.round(count * liningCost / total * 100) },
+          { name: 'Assembly', amount: Math.round(count * assemblyCost), pct: Math.round(count * assemblyCost / total * 100) },
+          { name: 'Postage', amount: Math.round(count * postageCost), pct: Math.round(count * postageCost / total * 100) }
+        ];
+        return { total, breakdown, perInvite: Math.round(perInvite * 100) / 100, suggestions: this.getInvitationSuggestions(values.printingMethod, count) };
+      },
+      'wedding-timeline-calculator': () => {
+        const ceremonyHour = parseInt(values.ceremonyTime) || 16;
+        const hasFirstLook = values.hasFirstLook === 'Yes';
+        const partySize = values.bridalPartySize || 8;
+        const receptionHrs = values.receptionDuration || 4;
+        const prepStart = ceremonyHour - (hasFirstLook ? 3 : 2.5);
+        const firstLookTime = hasFirstLook ? ceremonyHour - 1.5 : null;
+        const ceremonyEnd = ceremonyHour + 1;
+        const cocktailEnd = ceremonyEnd + 1;
+        const dinnerStart = cocktailEnd;
+        const dinnerEnd = dinnerStart + 1.5;
+        const dancingStart = dinnerEnd;
+        const receptionEnd = ceremonyEnd + receptionHrs;
+        const cakeTime = dinnerEnd + (receptionHrs > 4 ? 1 : 0.5);
+        const lastDance = receptionEnd;
+        const fmt = (h) => { const hr = Math.floor(h); const min = Math.round((h - hr) * 60); const ampm = hr >= 12 ? 'PM' : 'AM'; const h12 = hr > 12 ? hr - 12 : hr; return `${h12}:${min.toString().padStart(2,'0')} ${ampm}`; };
+        const events = [
+          { time: fmt(prepStart), name: 'Hair & Makeup / Getting Ready', duration: '2-3 hrs' },
+          { time: fmt(ceremonyHour - (hasFirstLook ? 2 : 1.5)), name: 'Bridal Party Photos', duration: hasFirstLook ? '30 min' : '1 hr' }
+        ];
+        if (hasFirstLook) events.push({ time: fmt(firstLookTime), name: 'First Look', duration: '30 min' });
+        events.push({ time: fmt(ceremonyHour), name: 'Ceremony', duration: '~1 hr' });
+        events.push({ time: fmt(ceremonyEnd), name: 'Cocktail Hour', duration: '1 hr' });
+        events.push({ time: fmt(dinnerStart), name: 'Grand Entrance & Dinner', duration: '1.5 hrs' });
+        events.push({ time: fmt(dinnerEnd), name: 'First Dance & Toasts', duration: '30 min' });
+        events.push({ time: fmt(dancingStart + 0.5), name: 'Open Dancing', duration: 'Open' });
+        events.push({ time: fmt(cakeTime), name: 'Cake Cutting', duration: '15 min' });
+        events.push({ time: fmt(lastDance - 0.25), name: 'Last Dance', duration: '15 min' });
+        events.push({ time: fmt(lastDance), name: 'Sparkler Send-Off', duration: '~15 min' });
+        return { total: Math.round((lastDance - prepStart) * 60), events, suggestions: this.getTimelineSuggestions(hasFirstLook, partySize) };
+      },
+      'wedding-vendor-comparison-tool': () => {
+        const q1 = values.quote1 || 0;
+        const q2 = values.quote2 || 0;
+        const q3 = values.quote3 || 0;
+        const quotes = [q1, q2, q3].filter(q => q > 0);
+        const avg = quotes.length > 0 ? Math.round(quotes.reduce((a,b) => a+b, 0) / quotes.length) : 0;
+        const min = quotes.length > 0 ? Math.min(...quotes) : 0;
+        const max = quotes.length > 0 ? Math.max(...quotes) : 0;
+        const range = max - min;
+        const vendorAverages = {
+          'Photographer': { low: 2000, high: 5000, typical: 3000 },
+          'Caterer': { low: 3000, high: 15000, typical: 8000 },
+          'Florist': { low: 800, high: 4000, typical: 2000 },
+          'DJ/Band': { low: 800, high: 5000, typical: 1500 },
+          'Venue': { low: 3000, high: 15000, typical: 7000 },
+          'Videographer': { low: 1500, high: 5000, typical: 2500 },
+          'Planner': { low: 1500, high: 8000, typical: 3000 }
+        };
+        const marketRef = vendorAverages[values.vendorCategory] || { low: 1000, high: 10000, typical: 3000 };
+        const items = [
+          { name: 'Vendor A', amount: q1 },
+          { name: 'Vendor B', amount: q2 },
+          { name: 'Vendor C', amount: q3 },
+          { name: 'Average Quote', amount: avg },
+          { name: 'Market Typical', amount: marketRef.typical }
+        ];
+        return { total: avg, items, low: min, high: max, range, marketRef, suggestions: this.getVendorComparisonSuggestions(values.vendorCategory, min, max, avg, marketRef) };
+      },
+      'wedding-checklist-calculator': () => {
+        const months = values.monthsUntil || 12;
+        const budget = values.budget || 30000;
+        const hasPlanner = values.hasPlanner || 'No - DIY';
+        const checklist = [];
+        if (months >= 12) checklist.push({ phase: '12+ Months Out', tasks: ['Set budget and priorities', 'Book venue', 'Hire planner (if using one)', 'Start guest list', 'Choose wedding party', 'Research vendors'] });
+        if (months >= 9) checklist.push({ phase: '9-12 Months Out', tasks: ['Book photographer & videographer', 'Book caterer', 'Choose wedding dress', 'Book entertainment (DJ/Band)', 'Register for gifts'] });
+        if (months >= 6) checklist.push({ phase: '6-9 Months Out', tasks: ['Book florist', 'Order invitations', 'Plan honeymoon', 'Book transportation', 'Schedule hair & makeup trial', 'Choose cake baker'] });
+        if (months >= 4) checklist.push({ phase: '4-6 Months Out', tasks: ['Send save-the-dates', 'Book officiant', 'Plan rehearsal dinner', 'Order wedding favors', 'Finalize menu', 'Book hotel room blocks'] });
+        if (months >= 2) checklist.push({ phase: '2-4 Months Out', tasks: ['Send invitations', 'Finalize seating chart', 'Get marriage license', 'Schedule final dress fitting', 'Write vows', 'Confirm all vendors'] });
+        checklist.push({ phase: 'Final Weeks', tasks: ['Final headcount to caterer', 'Confirm timeline with vendors', 'Rehearsal & rehearsal dinner', 'Prepare tips & payments', 'Pack for honeymoon', 'Enjoy your day!'] });
+        const priorityCount = checklist.reduce((sum, phase) => sum + phase.tasks.length, 0);
+        return { total: priorityCount, checklist, suggestions: this.getChecklistSuggestions(months, hasPlanner) };
+      },
+      'event-budget-calculator': () => {
+        const eventType = values.eventType || 'Corporate Conference';
+        const attendees = values.attendeeCount || 100;
+        const totalBudget = values.totalBudget || 10000;
+        const durationMult = this.data.eventDurationMult[values.duration] || 1;
+        const baseCostPP = this.data.eventCostPP[eventType] || 100;
+        const estimatedCost = attendees * baseCostPP * durationMult;
+        const split = this.data.eventBudgetSplit[eventType] || this.data.eventBudgetSplit['Corporate Conference'];
+        const adjustedBudget = Math.max(totalBudget, estimatedCost);
+        const breakdown = split.map(s => ({ name: s.name, amount: Math.round(adjustedBudget * s.pct), pct: Math.round(s.pct * 100) }));
+        return { total: Math.round(adjustedBudget), breakdown, perGuest: Math.round(adjustedBudget / attendees), estimatedCost: Math.round(estimatedCost), suggestions: this.getEventSuggestions(eventType, attendees, adjustedBudget) };
+      },
+      'wedding-insurance-calculator': () => {
+        const budget = values.totalBudget || 30000;
+        const coverageMult = { 'Liability Only': 0.005, 'Cancellation + Liability': 0.015, 'Comprehensive (Full Coverage)': 0.025 };
+        let rate = coverageMult[values.coverageType] || 0.015;
+        if (values.hasOutdoor === 'Yes') rate += 0.005;
+        if (values.hasAlcohol === 'Yes') rate += 0.003;
+        if (values.guestCount > 200) rate += 0.002;
+        rate = Math.min(rate, 0.04);
+        const total = Math.round(budget * rate);
+        const coverageAmount = Math.round(budget * (values.coverageType === 'Liability Only' ? 1 : values.coverageType === 'Cancellation + Liability' ? 1.5 : 2));
+        const breakdown = [
+          { name: 'Policy Premium', amount: total, pct: Math.round(total / (total + 50) * 100) },
+          { name: 'Endorsements & Riders', amount: Math.round(total * 0.1), pct: 10 },
+          { name: 'Documentation & Admin', amount: Math.round(total * 0.05), pct: 5 }
+        ];
+        return { total: total + Math.round(total * 0.15), breakdown, coverageAmount, rate: Math.round(rate * 10000) / 100, suggestions: this.getInsuranceSuggestions(values.coverageType, total, values.hasOutdoor) };
+      },
+      'wedding-rehearsal-dinner-calculator': () => {
+        const guests = values.guestCount || 40;
+        const styleCost = { 'Casual Restaurant': 45, 'Family Style': 55, 'Plated Dinner': 75, 'Buffet': 50, 'Cocktail/Appetizers Only': 35 };
+        const alcoholCost = { 'Full Bar': 25, 'Beer & Wine Only': 15, 'No Alcohol': 0 };
+        const locationMult = { 'Restaurant Private Room': 1.0, 'Home/Backyard': 0.6, 'Hotel Banquet': 1.3, 'Other Venue': 0.9 };
+        const pp = (styleCost[values.diningStyle] || 55) + (alcoholCost[values.includesAlcohol] || 0);
+        const locationM = locationMult[values.location] || 1;
+        const catering = Math.round(guests * pp * locationM);
+        const decorations = Math.round(catering * 0.08);
+        const gratuities = Math.round(catering * 0.2);
+        const total = catering + decorations + gratuities;
+        const breakdown = [
+          { name: 'Food & Drinks', amount: catering, pct: Math.round(catering / total * 100) },
+          { name: 'Decorations', amount: decorations, pct: Math.round(decorations / total * 100) },
+          { name: 'Gratuities (20%)', amount: gratuities, pct: Math.round(gratuities / total * 100) }
+        ];
+        return { total, breakdown, perGuest: Math.round(total / guests), suggestions: this.getRehearsalDinnerSuggestions(values.diningStyle, guests) };
+      },
+      'bridesmaid-dress-budget-calculator': () => {
+        const count = values.bridesmaidCount || 5;
+        const dressCost = { 'Budget ($80-150)': 115, 'Mid-Range ($150-250)': 200, 'Premium ($250-400)': 325, 'Designer ($400+)': 500 };
+        const dressPP = dressCost[values.dressStyle] || 200;
+        const dressTotal = count * dressPP;
+        const alterations = count * 45;
+        const shoes = values.includesShoes === 'Yes' ? count * 65 : 0;
+        const jewelry = values.includesJewelry === 'Yes' ? count * 40 : 0;
+        const total = dressTotal + alterations + shoes + jewelry;
+        const breakdown = [
+          { name: `Dresses (${count})`, amount: dressTotal, pct: Math.round(dressTotal / total * 100) },
+          { name: 'Alterations', amount: alterations, pct: Math.round(alterations / total * 100) },
+          { name: 'Matching Shoes', amount: shoes, pct: Math.round(shoes / total * 100) },
+          { name: 'Jewelry Gifts', amount: jewelry, pct: Math.round(jewelry / total * 100) }
+        ];
+        return { total, breakdown, perBridesmaid: Math.round(total / count), suggestions: this.getBMDressSuggestions(values.dressStyle, count) };
+      },
+      'wedding-morning-prep-calculator': () => {
+        const partySize = values.bridalPartySize || 6;
+        const breakfast = { 'Yes - Catered': partySize * 25, 'Yes - DIY/Pickup': partySize * 12, 'No': 0 }[values.includeBreakfast] || 0;
+        const champagne = values.includeChampagne === 'Yes' ? partySize * 12 : 0;
+        const emergencyKit = { 'Yes - Pre-Made': 45, 'Yes - DIY': 25, 'No': 0 }[values.includeEmergencyKit] || 0;
+        const robes = partySize * 30;
+        const gettingReadyDecor = 50;
+        const total = breakfast + champagne + emergencyKit + robes + gettingReadyDecor;
+        const breakdown = [
+          { name: 'Breakfast/Brunch', amount: breakfast, pct: Math.round(breakfast / total * 100) },
+          { name: 'Champagne/Mimosas', amount: champagne, pct: Math.round(champagne / total * 100) },
+          { name: 'Emergency Kit', amount: emergencyKit, pct: Math.round(emergencyKit / total * 100) },
+          { name: 'Matching Robes', amount: robes, pct: Math.round(robes / total * 100) },
+          { name: 'Getting Ready Decor', amount: gettingReadyDecor, pct: Math.round(gettingReadyDecor / total * 100) }
+        ];
+        return { total, breakdown, suggestions: this.getMorningPrepSuggestions(partySize) };
+      },
+      'wedding-sendoff-calculator': () => {
+        const guests = values.guestCount || 100;
+        const sendoffCosts = {
+          'Sparkler Exit': { pp: 2.5, supplies: 25 },
+          'Flower Petal Toss': { pp: 1.2, supplies: 15 },
+          'Ribbon Wands': { pp: 0.8, supplies: 10 },
+          'Bubbles': { pp: 0.5, supplies: 5 },
+          'Lavender Toss': { pp: 1.5, supplies: 20 },
+          'Biodegradable Confetti': { pp: 0.7, supplies: 10 }
+        };
+        const sendoff = sendoffCosts[values.sendoffType] || sendoffCosts['Bubbles'];
+        const supplies = Math.round(guests * sendoff.pp) + sendoff.supplies;
+        const signage = values.includesSignage === 'Yes' ? 35 : 0;
+        const cleanup = values.sendoffType === 'Sparkler Exit' ? 50 : 25;
+        const total = supplies + signage + cleanup;
+        const breakdown = [
+          { name: `${values.sendoffType} Supplies`, amount: supplies, pct: Math.round(supplies / total * 100) },
+          { name: 'Signage', amount: signage, pct: Math.round(signage / total * 100) },
+          { name: 'Cleanup', amount: cleanup, pct: Math.round(cleanup / total * 100) }
+        ];
+        return { total, breakdown, suggestions: this.getSendoffSuggestions(values.sendoffType, guests) };
+      },
+      'wedding-cake-serving-calculator': () => {
+        const guests = values.guestCount || 120;
+        const servingMult = { 'Standard Wedding Slice (1x2)': 1, 'Dessert Portion (Larger)': 1.5, 'Tasting Portion (Mini)': 0.6 };
+        const dessertMult = { 'Yes - Full Dessert Bar': 0.7, 'Yes - Small Sweet Station': 0.85, 'No - Cake Only': 1 };
+        const servings = Math.ceil(guests * (servingMult[values.servingSize] || 1) * (dessertMult[values.hasDessertBar] || 1));
+        const extraServings = Math.ceil(servings * 1.08);
+        const items = [
+          { name: 'Guest Servings', amount: servings },
+          { name: 'With 8% Buffer', amount: extraServings },
+          { name: 'Top Tier (Keepsake)', amount: 1 }
+        ];
+        const totalServings = extraServings + 1;
+        return { total: totalServings, items, servings, extraServings, suggestions: this.getCakeServingSuggestions(servings, values.hasDessertBar) };
+      },
+      'wedding-guest-transportation-calculator': () => {
+        const guests = values.outOfTownGuests || 30;
+        const shuttleCost = { 'Standard Shuttle Bus (25-35 pax)': 550, 'Mini Coach (20-25 pax)': 450, 'Luxury Coach (40-50 pax)': 850, 'Vintage Trolley': 750 };
+        const tripCost = shuttleCost[values.shuttleType] || 550;
+        const tripCount = { '1 (Ceremony to Reception)': 1, '2 (Hotel-Ceremony + Ceremony-Reception)': 2, '3 (Full loop including return)': 3 }[values.roundTripsNeeded] || 2;
+        const shuttleTotal = tripCost * tripCount;
+        const localGuests = Math.ceil(guests / 30) * 30 > guests ? Math.ceil(guests / 30) * 30 : guests;
+        const valet = values.includesValet === 'Yes' ? localGuests * 8 : 0;
+        const tips = Math.round(shuttleTotal * 0.15);
+        const total = shuttleTotal + valet + tips;
+        const breakdown = [
+          { name: `Shuttle (${tripCount} trip${tripCount > 1 ? 's' : ''})`, amount: shuttleTotal, pct: Math.round(shuttleTotal / total * 100) },
+          { name: 'Valet Parking', amount: valet, pct: Math.round(valet / total * 100) },
+          { name: 'Driver Tips (15%)', amount: tips, pct: Math.round(tips / total * 100) }
+        ];
+        return { total, breakdown, suggestions: this.getGuestTransportSuggestions(guests, tripCount) };
       }
     };
 
@@ -768,6 +1095,151 @@ class CalculatorEngine {
     const tips = [];
     tips.push('A service charge (typically 20-25%) is NOT a tip — it goes to the venue, not the staff');
     tips.push('Budget for vendor tips separately: 15-20% for catering, $50-100 for delivery, 15-20% for hair/makeup');
+    return tips;
+  }
+
+  getDressSuggestions(style, budgetPct) {
+    const tips = [];
+    if (budgetPct > 10) tips.push('Your dress budget exceeds 10% of total — consider allocating more to venue and catering');
+    if (style === 'Designer/Luxury') tips.push('Designer gowns often have 6-8 month lead times — start shopping early');
+    tips.push('Always budget for alterations — they typically cost $200-$600 and are rarely included');
+    tips.push('Sample sales can save 40-70% on designer gowns if you wear a standard size');
+    return tips;
+  }
+
+  getSuitSuggestions(option, count) {
+    const tips = [];
+    if (option === 'Buy Tuxedo') tips.push('A purchased tuxedo pays for itself after 3-4 events — great if you attend galas regularly');
+    if (count > 6) tips.push('With a large wedding party, negotiate group rental discounts (typically 10-15% off)');
+    tips.push('Schedule fittings 4-6 weeks before the wedding, with a final fitting 1-2 weeks out');
+    return tips;
+  }
+
+  getHairMakeupSuggestions(count, trial) {
+    const tips = [];
+    if (count > 6) tips.push('For large bridal parties, book a second stylist to avoid a 5am start time');
+    if (trial !== 'Yes') tips.push('We strongly recommend a trial run — it eliminates day-of surprises and saves time');
+    tips.push('Book your beauty team 6-9 months in advance for peak season weddings');
+    return tips;
+  }
+
+  getPhotographySuggestions(level, hours, secondShooter) {
+    const tips = [];
+    if (hours < 8) tips.push('Less than 8 hours of coverage means you may miss getting-ready or send-off moments');
+    if (secondShooter !== 'Yes') tips.push('A second shooter captures angles your main photographer can\'t — highly recommended for 100+ guests');
+    if (level === 'Premium') tips.push('Premium photographers often include engagement sessions — confirm what\'s in your package');
+    tips.push('Create a shot list 2-3 weeks before the wedding so nothing is missed');
+    return tips;
+  }
+
+  getInvitationSuggestions(method, count) {
+    const tips = [];
+    if (method === 'Engraving') tips.push('Engraving is the most formal and expensive option — consider letterpress for a similar look at 40% less');
+    if (method === 'Digital Print') tips.push('Digital printing has improved dramatically — modern options can look nearly identical to thermography');
+    tips.push('Order 10-15% extra invitations for last-minute guest additions and keepsakes');
+    tips.push('Send invitations 6-8 weeks before the wedding (8-12 weeks for destination)');
+    return tips;
+  }
+
+  getTimelineSuggestions(hasFirstLook, partySize) {
+    const tips = [];
+    if (!hasFirstLook) tips.push('Without a first look, schedule 60-90 minutes for post-ceremony photos — your guests will wait during cocktail hour');
+    if (partySize > 12) tips.push('Large bridal parties need extra time for photos — add 15-20 minutes per 4 additional people');
+    tips.push('Build in 15-30 minutes of buffer time between major transitions');
+    tips.push('Share your timeline with all vendors 2 weeks before the wedding');
+    return tips;
+  }
+
+  getVendorComparisonSuggestions(category, min, max, avg, marketRef) {
+    const tips = [];
+    if (max - min > marketRef.typical * 0.5) tips.push('Your quotes vary widely — ask each vendor for a detailed breakdown to compare apples to apples');
+    if (avg < marketRef.low) tips.push('Quotes below market rate may indicate inexperience or limited services — verify portfolios and reviews');
+    if (avg > marketRef.high) tips.push('Quotes above market rate should include premium services — confirm exactly what\'s included');
+    tips.push('Always sign a detailed contract that specifies deliverables, timelines, and cancellation terms');
+    return tips;
+  }
+
+  getChecklistSuggestions(months, hasPlanner) {
+    const tips = [];
+    if (months < 6) tips.push('With less than 6 months, prioritize venue, caterer, and photographer — they book up fastest');
+    if (hasPlanner === 'No - DIY') tips.push('Without a planner, add 5-10 hours per week for wedding tasks in the final 3 months');
+    if (hasPlanner.includes('Month-Of')) tips.push('Hand off your vendor contacts to your month-of coordinator 4-6 weeks before the wedding');
+    tips.push('Set up a dedicated wedding email address to keep all vendor communication in one place');
+    return tips;
+  }
+
+  getEventSuggestions(type, attendees, budget) {
+    const tips = [];
+    const pp = budget / attendees;
+    if (type === 'Corporate Conference' && pp < 100) tips.push('Corporate events under $100/person may struggle with AV and catering quality — consider a hybrid format');
+    if (type === 'Gala/Fundraiser') tips.push('Galas should aim for at least 3x ticket price in revenue — budget accordingly for a memorable experience');
+    if (attendees > 200) tips.push('For large events, hire a dedicated event coordinator — logistics scale exponentially past 200 guests');
+    tips.push('Always negotiate venue costs — ask about non-profit discounts, off-peak rates, and package deals');
+    return tips;
+  }
+
+  getInsuranceSuggestions(coverage, cost, outdoor) {
+    const tips = [];
+    if (coverage === 'Liability Only') tips.push('Liability-only coverage does not protect your deposits — consider adding cancellation coverage');
+    if (outdoor === 'Yes') tips.push('Outdoor weddings have higher weather risk — cancellation coverage is especially important');
+    tips.push('Purchase insurance as soon as you start signing vendor contracts — most policies cover vendor bankruptcy');
+    if (cost > 500) tips.push('For policies over $500, compare quotes from WedSafe, Protect My Wedding, and EventHelper');
+    return tips;
+  }
+
+  getRehearsalDinnerSuggestions(style, guests) {
+    const tips = [];
+    if (guests > 50) tips.push('For larger rehearsal dinners, a buffet or family-style service is more cost-effective and social');
+    if (style === 'Home/Backyard') tips.push('Home-hosted dinners save 30-50% but require more planning — hire a caterer to handle food and cleanup');
+    tips.push('The rehearsal dinner sets the tone for the weekend — keep it relaxed and fun, not a mini-wedding');
+    return tips;
+  }
+
+  getBMDressSuggestions(style, count) {
+    const tips = [];
+    if (count > 6) tips.push('With a large bridal party, choose mix-and-match dresses so each bridesmaid finds a flattering fit');
+    tips.push('Order all dresses from the same retailer at the same time to ensure dye-lot consistency');
+    if (style.includes('Designer')) tips.push('Designer bridesmaid dresses often go on sale — check Azazie, BHLDN, and Lulus for similar looks at lower prices');
+    return tips;
+  }
+
+  getAccessoriesSuggestions(total) {
+    const tips = [];
+    if (total > 600) tips.push('With a high accessories budget, consider what will be visible in photos — invest in veil and jewelry, save on shoes');
+    tips.push('Bring your dress photo when shopping for accessories — the neckline and style determine what works best');
+    tips.push('Consider renting a veil or headpiece from sites like Rent the Runway to save 50-70%');
+    return tips;
+  }
+
+  getMorningPrepSuggestions(partySize) {
+    const tips = [];
+    if (partySize > 8) tips.push('For large bridal parties, book hair and makeup stylists early — you may need a team of 2-3 stylists');
+    tips.push('Set up a "getting ready" playlist and keep the room clutter-free for better photos');
+    tips.push('Pack a separate "ceremony emergency" bag with mints, deodorant, and stain remover');
+    return tips;
+  }
+
+  getSendoffSuggestions(type, guests) {
+    const tips = [];
+    if (type === 'Sparkler Exit') tips.push('Use 36-inch sparklers (not 20-inch) for a longer, more photogenic exit — they burn for 2-3 minutes');
+    if (type === 'Bubbles') tips.push('Bubbles are venue-friendly and photo-friendly, but use premium bubble solution for longer-lasting bubbles');
+    tips.push('Check with your venue before planning a send-off — some restrict sparklers, confetti, or petals');
+    return tips;
+  }
+
+  getCakeServingSuggestions(servings, hasDessert) {
+    const tips = [];
+    if (servings > 150) tips.push('For 150+ servings, consider a smaller display cake plus kitchen sheet cakes — saves 30-50%');
+    if (hasDessert.includes('Full')) tips.push('With a full dessert bar, most guests will take smaller cake portions — you can order 20-30% fewer servings');
+    tips.push('Save the top tier for your first anniversary — wrap it well in plastic and foil, then freeze');
+    return tips;
+  }
+
+  getGuestTransportSuggestions(guests, trips) {
+    const tips = [];
+    if (trips >= 2) tips.push('Multi-trip shuttles are more expensive but ensure no guest is left waiting — stagger departure times');
+    if (guests > 50) tips.push('For 50+ out-of-town guests, negotiate a group rate with a shuttle company — typically 10-15% off');
+    tips.push('Create a simple transport schedule card and include it in welcome bags for out-of-town guests');
     return tips;
   }
 }
