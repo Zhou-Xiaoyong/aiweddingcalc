@@ -5,6 +5,7 @@
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com; frame-ancestors 'none'
 
 /css/*
   Cache-Control: public, max-age=31536000, immutable
@@ -16,4 +17,7 @@
   Cache-Control: public, max-age=3600
 
 /sitemap.xml
+  Cache-Control: public, max-age=86400
+
+/robots.txt
   Cache-Control: public, max-age=86400

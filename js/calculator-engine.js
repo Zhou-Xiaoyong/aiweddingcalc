@@ -7,14 +7,14 @@
 const US_WEDDING_DATA = {
   avgBudget: 33000,
   avgGuests: 117,
-  costPerGuest: { casual: 120, semiFormal: 185, formal: 275, blackTie: 400, luxury: 600 },
+  costPerGuest: { backyard: 75, casual: 120, semiFormal: 185, formal: 275, blackTie: 400, luxury: 600 },
   locationMultiplier: {
     'Northeast': 1.3, 'Southeast': 0.9, 'Midwest': 0.85,
     'Southwest': 0.95, 'West Coast': 1.35, 'Destination': 1.2
   },
   stateMultiplier: {
     'California': 1.35, 'New York': 1.4, 'Texas': 0.85, 'Florida': 1.0,
-    'Illinois': 1.05, 'Pennsylvania': 1.0, 'Ohio': 0.85, 'Other': 1.0
+    'Illinois': 1.05, 'Pennsylvania': 1.0, 'Ohio': 0.85, 'Georgia': 0.95, 'Other': 1.0
   },
   seasonMultiplier: { 'Spring': 1.05, 'Summer': 1.15, 'Fall': 1.1, 'Winter': 0.85 },
   dayMultiplier: { 'Saturday': 1.2, 'Friday': 1.0, 'Sunday': 0.9, 'Weekday': 0.75 },
@@ -38,7 +38,7 @@ const US_WEDDING_DATA = {
   inviteInsertCost: { 'RSVP Card Only': 0.5, 'RSVP + Details': 1.0, 'RSVP + Details + Map': 1.5, 'Full Suite': 2.5 },
   envelopeLiningCost: 0.5,
   inviteAssemblyCost: 0.5,
-  postageCost: 1.32,
+  postageCost: 0.99,
   alterationsCost: { 'Simple/Minimalist': 200, 'Classic/A-Line': 300, 'Ballgown': 450, 'Designer/Luxury': 600 },
   dressAccessories: { veil: 200, shoes: 120, jewelry: 100, belt: 100, headpiece: 150 },
   suitAccessories: { shoes: 120, tie: 40, pocketSquare: 20, cufflinks: 40, vest: 80 },
@@ -130,7 +130,8 @@ class CalculatorEngine {
   // Wedding Cost Estimator
   weddingCostEstimator(values) {
     const { guestCount, location, style, hasRehearsal, hasHoneymoon } = values;
-    const base = this.data.costPerGuest[style.replace(/-/g,'').replace('SemiFormal','semiFormal').replace('BlackTie','blackTie').toLowerCase()] || 185;
+    const styleKeyMap = { 'Backyard': 'backyard', 'Casual': 'casual', 'Semi-Formal': 'semiFormal', 'Formal': 'formal', 'Black Tie': 'blackTie', 'Luxury': 'luxury' };
+    const base = this.data.costPerGuest[styleKeyMap[style] || 'semiFormal'] || 185;
     const stateMult = this.data.stateMultiplier[location] || 1;
     let total = guestCount * base * stateMult;
     if (hasRehearsal === 'Yes') total += 2500;
@@ -439,7 +440,7 @@ class CalculatorEngine {
       'wedding-videography-cost-calculator': () => {
         const pkgMult = { 'Highlight Reel (3-5 min)': 1500, 'Ceremony + Highlights': 2500, 'Full Documentary': 3500, 'Same-Day Edit': 4500 };
         let total = pkgMult[values.packageType] || 2500;
-        total += (values.duration - 8) * 150;
+        total += Math.max(0, (values.duration - 8)) * 150;
         if (values.droneFootage === 'Yes') total += 400;
         if (values.rawFootage === 'Yes') total += 300;
         return total;
@@ -456,7 +457,7 @@ class CalculatorEngine {
       'wedding-save-the-date-calculator': () => {
         const pp = this.data.saveTheDateCost[values.format] || 1.8;
         const count = values.guestCount || 80;
-        return Math.round(count * pp + (count * 0.63));
+        return Math.round(count * pp + (count * 0.73));
       },
       'wedding-program-calculator': () => {
         const pp = this.data.programCost[values.format] || 1.2;
@@ -467,14 +468,14 @@ class CalculatorEngine {
       'wedding-thank-you-card-calculator': () => {
         const pp = this.data.thankYouCost[values.cardStyle] || 2;
         const count = Math.ceil((values.guestCount || 100) * 1.15);
-        const stamps = values.includeStamps === 'Yes' ? count * 0.66 : 0;
+        const stamps = values.includeStamps === 'Yes' ? count * 0.73 : 0;
         return Math.round(count * pp + stamps);
       },
       'wedding-band-cost-calculator': () => {
         const base = this.data.bandPP[values.bandSize] || 1200;
         const hours = values.duration || 4;
         const ceremony = values.ceremonyPerformance === 'Yes' ? 500 : 0;
-        return base * (hours / 3) + ceremony;
+        return Math.round(base * ((hours || 4) / 3)) + ceremony;
       },
       'wedding-entertainment-budget-calculator': () => {
         const items = { 'Photo Booth Only': 800, 'Photo Booth + Lawn Games': 1400, 'Photo Booth + Magician': 1800, 'Full Entertainment Package': 3000 };
@@ -483,7 +484,7 @@ class CalculatorEngine {
       'wedding-favor-cost-calculator': () => (values.guestCount || 100) * (values.costPerGuest || 5),
       'wedding-party-gift-calculator': () => {
         const levelMult = { 'Thoughtful ($25-50 each)': 35, 'Standard ($50-100 each)': 75, 'Premium ($100+ each)': 125 };
-        const bridal = (values.bridesmaidCount + values.groomsmanCount) * (levelMult[values.giftLevel] || 75);
+        const bridal = ((values.bridesmaidCount || 0) + (values.groomsmanCount || 0)) * (levelMult[values.giftLevel] || 75);
         const parentGifts = values.parentsGifts === 'Yes - Both Sets' ? 400 : values.parentsGifts === 'Yes - One Set' ? 200 : 0;
         return bridal + parentGifts;
       },
@@ -491,7 +492,7 @@ class CalculatorEngine {
         const pkg = this.data.djPackages[values.packageLevel] || 1200;
         const ceremony = values.ceremonyMusic === 'Yes' ? 300 : 0;
         const soundRental = values.soundSystem === 'Need rental' ? 400 : 0;
-        return pkg * (values.duration / 4) + ceremony + soundRental;
+        return Math.round(pkg * ((values.duration || 4) / 4)) + ceremony + soundRental;
       },
       'wedding-rings-budget-calculator': () => {
         const metal = this.data.ringCosts[values.metalPreference] || 600;
@@ -511,7 +512,7 @@ class CalculatorEngine {
       'wedding-transportation-cost-calculator': () => {
         const pph = this.data.transportationCosts[values.vehicleType] || 120;
         const mainVehicle = pph * (values.duration || 4);
-        const shuttle = values.needShuttle.includes('Yes') ? Math.ceil((values.guestShuttleCount || 30) / 50) * 500 : 0;
+        const shuttle = values.needShuttle?.includes('Yes') ? Math.ceil((values.guestShuttleCount || 30) / 50) * 500 : 0;
         return mainVehicle + shuttle;
       },
       'wedding-planner-cost-calculator': () => {
@@ -569,7 +570,7 @@ class CalculatorEngine {
         const brideHair = this.data.hairCost[values.brideHair] || 200;
         const brideMakeup = this.data.makeupCost[values.brideMakeup] || 200;
         const bridesmaidCount = values.bridesmaidCount || 0;
-        const motherCount = values.mothOfBride || 0;
+        const motherCount = values.motherCount || 0;
         const bridesmaidCost = bridesmaidCount * this.data.bridesmaidHairMakeupPP;
         const motherCost = motherCount * this.data.motherHairMakeupPP;
         const trialCost = values.trialIncluded === 'Yes' ? (this.data.trialHairCost + this.data.trialMakeupCost) : 0;
@@ -717,12 +718,15 @@ class CalculatorEngine {
         rate = Math.min(rate, 0.04);
         const total = Math.round(budget * rate);
         const coverageAmount = Math.round(budget * (values.coverageType === 'Liability Only' ? 1 : values.coverageType === 'Cancellation + Liability' ? 1.5 : 2));
+        const endorsements = Math.round(total * 0.1);
+        const admin = Math.round(total * 0.05);
+        const grandTotal = total + endorsements + admin;
         const breakdown = [
-          { name: 'Policy Premium', amount: total, pct: Math.round(total / (total + 50) * 100) },
-          { name: 'Endorsements & Riders', amount: Math.round(total * 0.1), pct: 10 },
-          { name: 'Documentation & Admin', amount: Math.round(total * 0.05), pct: 5 }
+          { name: 'Policy Premium', amount: total, pct: Math.round(total / grandTotal * 100) },
+          { name: 'Endorsements & Riders', amount: endorsements, pct: Math.round(endorsements / grandTotal * 100) },
+          { name: 'Documentation & Admin', amount: admin, pct: Math.round(admin / grandTotal * 100) }
         ];
-        return { total: total + Math.round(total * 0.15), breakdown, coverageAmount, rate: Math.round(rate * 10000) / 100, suggestions: this.getInsuranceSuggestions(values.coverageType, total, values.hasOutdoor) };
+        return { total: grandTotal, breakdown, coverageAmount, rate: Math.round(rate * 10000) / 100, suggestions: this.getInsuranceSuggestions(values.coverageType, total, values.hasOutdoor) };
       },
       'wedding-rehearsal-dinner-calculator': () => {
         const guests = values.guestCount || 40;
@@ -818,8 +822,7 @@ class CalculatorEngine {
         const tripCost = shuttleCost[values.shuttleType] || 550;
         const tripCount = { '1 (Ceremony to Reception)': 1, '2 (Hotel-Ceremony + Ceremony-Reception)': 2, '3 (Full loop including return)': 3 }[values.roundTripsNeeded] || 2;
         const shuttleTotal = tripCost * tripCount;
-        const localGuests = Math.ceil(guests / 30) * 30 > guests ? Math.ceil(guests / 30) * 30 : guests;
-        const valet = values.includesValet === 'Yes' ? localGuests * 8 : 0;
+        const valet = values.includesValet === 'Yes' ? guests * 8 : 0;
         const tips = Math.round(shuttleTotal * 0.15);
         const total = shuttleTotal + valet + tips;
         const breakdown = [
