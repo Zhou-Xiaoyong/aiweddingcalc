@@ -143,8 +143,8 @@ class CalculatorEngine {
 
   // Wedding Savings Calculator
   weddingSavings(values) {
-    const { targetBudget, currentSavings, monthsUntil, monthlyContribution } = values;
-    const familyContrib = monthlyContribution || 0;
+    const { targetBudget, currentSavings, monthsUntil, familyContribution } = values;
+    const familyContrib = familyContribution || 0;
     const needed = targetBudget - currentSavings - familyContrib;
     const monthlySave = needed > 0 ? Math.ceil(needed / monthsUntil) : 0;
     const weeklySave = Math.ceil(monthlySave / 4.33);
@@ -900,9 +900,16 @@ class CalculatorEngine {
     if (extras.includes('Stage')) extraSqft += 200;
     const totalSqft = guestCount * sqftPP + extraSqft;
     const cost = Math.round(totalSqft * (this.data.tentCostPerSqft[tentType] || 4));
-    // Find tent dimensions
-    const side = Math.ceil(Math.sqrt(totalSqft / 2) / 10) * 10;
-    return { totalSqft, dimensions: `${side}x${Math.ceil(totalSqft / side / 10) * 10}`, cost, suggestions: this.getTentSuggestions(guestCount, tentType) };
+    // Find nearest standard tent dimensions
+    const standardSizes = [[10,10],[10,20],[10,30],[15,15],[15,20],[15,30],[20,20],[20,30],[20,40],[20,50],[30,30],[30,40],[30,50],[30,60],[40,40],[40,50],[40,60],[40,80],[50,50],[50,60],[50,80],[60,60],[60,80],[60,100]];
+    let bestSize = standardSizes[0];
+    for (const [w, h] of standardSizes) {
+      if (w * h >= totalSqft) { bestSize = [w, h]; break; }
+      bestSize = [w, h];
+    }
+    const tentSqft = bestSize[0] * bestSize[1];
+    const finalCost = Math.round(tentSqft * (this.data.tentCostPerSqft[tentType] || 4));
+    return { totalSqft, dimensions: `${bestSize[0]}x${bestSize[1]}`, tentSqft, cost: finalCost, suggestions: this.getTentSuggestions(guestCount, tentType) };
   }
 
   // =================== AI SUGGESTIONS ===================
