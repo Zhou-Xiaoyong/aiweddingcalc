@@ -7,48 +7,57 @@
 const AMAZON_TAG = 'calchive-20';
 const AMAZON_PRODUCTS = {
   decor: [
-    { name: 'Wedding Centerpiece Stand Set', asin: 'B08LZQ7X9Z', price: 49.99, category: 'Decor', img: '' },
-    { name: 'Gold Wedding Arch Flowers', asin: 'B09N7XZQ5L', price: 89.99, category: 'Decor', img: '' },
-    { name: 'Floating Candle Holders Set', asin: 'B07V3XZ7XQ', price: 34.99, category: 'Decor', img: '' },
-    { name: 'Wedding Table Runners (10 Pack)', asin: 'B08PKL6X9Z', price: 29.99, category: 'Decor', img: '' }
+    { name: 'Gold Wedding Centerpiece Stands', searchTerm: 'wedding centerpiece stands gold', price: 49.99, category: 'Decor', img: '' },
+    { name: 'Artificial Wedding Arch Flowers', searchTerm: 'wedding arch flowers artificial silk', price: 89.99, category: 'Decor', img: '' },
+    { name: 'Floating Candle Holders Set', searchTerm: 'floating candle holders wedding centerpiece', price: 34.99, category: 'Decor', img: '' },
+    { name: 'Satin Table Runners (10 Pack)', searchTerm: 'satin table runners wedding 10 pack', price: 29.99, category: 'Decor', img: '' },
+    { name: 'Wedding Chair Sashes Set', searchTerm: 'wedding chair sashes bows set', price: 39.99, category: 'Decor', img: '' },
+    { name: 'String Lights Fairy Lights', searchTerm: 'fairy string lights wedding decoration', price: 24.99, category: 'Decor', img: '' }
   ],
   favors: [
-    { name: 'Personalized Wedding Favor Boxes (50 Pack)', asin: 'B07YZQ7X9Z', price: 24.99, category: 'Favors', img: '' },
-    { name: 'Mini Champagne Bottle Favors (24 Pack)', asin: 'B09KLM5X9Z', price: 39.99, category: 'Favors', img: '' },
-    { name: 'Custom Wedding Koozies (100 Pack)', asin: 'B08N7XZQ5L', price: 59.99, category: 'Favors', img: '' },
-    { name: 'Scented Candle Favors (24 Pack)', asin: 'B07PQR7X9Z', price: 44.99, category: 'Favors', img: '' }
+    { name: 'Wedding Favor Boxes (50 Pack)', searchTerm: 'wedding favor boxes 50 pack with ribbon', price: 24.99, category: 'Favors', img: '' },
+    { name: 'Mini Glass Bottles for Favors', searchTerm: 'mini glass bottles wedding favors 24 pack', price: 39.99, category: 'Favors', img: '' },
+    { name: 'Wedding Can Coolers (100 Pack)', searchTerm: 'wedding can coolers koozies 100 pack', price: 59.99, category: 'Favors', img: '' },
+    { name: 'Scented Candle Favors (24 Pack)', searchTerm: 'scented candle wedding favors 24 pack', price: 44.99, category: 'Favors', img: '' },
+    { name: 'Personalized Wedding Fans', searchTerm: 'wedding fans for guests personalized', price: 32.99, category: 'Favors', img: '' }
   ],
   stationery: [
-    { name: 'Wedding Invitation Kit (50 Sets)', asin: 'B08LZQ7X9Z', price: 49.99, category: 'Stationery', img: '' },
-    { name: 'RSVP Postcards (100 Pack)', asin: 'B09N7XZQ5L', price: 24.99, category: 'Stationery', img: '' },
-    { name: 'Wedding Guest Book with Pen', asin: 'B07V3XZ7XQ', price: 19.99, category: 'Stationery', img: '' },
-    { name: 'Custom Wedding Stickers (500 Pack)', asin: 'B08PKL6X9Z', price: 14.99, category: 'Stationery', img: '' }
+    { name: 'Wedding Invitation Kits (50 Sets)', searchTerm: 'wedding invitation kits with envelopes 50 sets', price: 49.99, category: 'Stationery', img: '' },
+    { name: 'RSVP Postcards (100 Pack)', searchTerm: 'rsvp postcards for wedding 100 pack', price: 24.99, category: 'Stationery', img: '' },
+    { name: 'Wedding Guest Book with Pen', searchTerm: 'wedding guest book with pen set', price: 19.99, category: 'Stationery', img: '' },
+    { name: 'Wedding Envelope Seals Stickers', searchTerm: 'wedding envelope seals stickers 500 pack', price: 14.99, category: 'Stationery', img: '' },
+    { name: 'Save the Date Magnets', searchTerm: 'save the date magnets wedding', price: 29.99, category: 'Stationery', img: '' }
   ],
   cake: [
-    { name: '3-Tier Cake Stand Gold', asin: 'B07YZQ7X9Z', price: 45.99, category: 'Cake', img: '' },
-    { name: 'Cake Serving Set Decorated', asin: 'B09KLM5X9Z', price: 29.99, category: 'Cake', img: '' },
-    { name: 'Wedding Cake Topper Personalized', asin: 'B08N7XZQ5L', price: 19.99, category: 'Cake', img: '' }
+    { name: '3-Tier Gold Cake Stand', searchTerm: '3 tier gold cupcake stand wedding', price: 45.99, category: 'Cake', img: '' },
+    { name: 'Wedding Cake Serving Set', searchTerm: 'wedding cake server and knife set', price: 29.99, category: 'Cake', img: '' },
+    { name: 'Personalized Cake Topper', searchTerm: 'personalized wedding cake topper custom', price: 19.99, category: 'Cake', img: '' },
+    { name: 'Cake Dowels and Supports', searchTerm: 'wedding cake dowels supports tiered', price: 12.99, category: 'Cake', img: '' }
   ],
   photography: [
-    { name: 'Wedding Photo Album Leather', asin: 'B07PQR7X9Z', price: 59.99, category: 'Photography', img: '' },
-    { name: 'Disposable Cameras (20 Pack)', asin: 'B08LZQ7X9Z', price: 79.99, category: 'Photography', img: '' },
-    { name: 'Photo Booth Props Kit', asin: 'B09N7XZQ5L', price: 24.99, category: 'Photography', img: '' }
+    { name: 'Leather Wedding Photo Album', searchTerm: 'leather wedding photo album self adhesive', price: 59.99, category: 'Photography', img: '' },
+    { name: 'Disposable Film Cameras (20 Pack)', searchTerm: 'disposable cameras for wedding 20 pack bulk', price: 79.99, category: 'Photography', img: '' },
+    { name: 'Wedding Photo Booth Props Kit', searchTerm: 'wedding photo booth props kit fun signs', price: 24.99, category: 'Photography', img: '' },
+    { name: 'Polaroid Photo Album', searchTerm: 'polaroid photo album wedding instax', price: 34.99, category: 'Photography', img: '' }
   ],
   jewelry: [
-    { name: 'Wedding Band Set Titanium', asin: 'B07V3XZ7XQ', price: 49.99, category: 'Jewelry', img: '' },
-    { name: 'Bridesmaid Jewelry Set (5 Pack)', asin: 'B08PKL6X9Z', price: 69.99, category: 'Jewelry', img: '' }
+    { name: 'Titanium Wedding Band Set', searchTerm: 'titanium wedding band sets for couples', price: 49.99, category: 'Jewelry', img: '' },
+    { name: 'Bridesmaid Jewelry Sets (5 Pack)', searchTerm: 'bridesmaid jewelry sets wedding 5 pack', price: 69.99, category: 'Jewelry', img: '' },
+    { name: 'Pearl Bridal Earrings', searchTerm: 'pearl bridal earrings wedding set', price: 35.99, category: 'Jewelry', img: '' }
   ],
   diyKits: [
-    { name: 'Wedding Decorations DIY Kit', asin: 'B07YZQ7X9Z', price: 89.99, category: 'DIY', img: '' },
-    { name: 'Wedding Invitation Making Kit', asin: 'B09KLM5X9Z', price: 54.99, category: 'DIY', img: '' }
+    { name: 'Wedding Decorations DIY Kit', searchTerm: 'wedding decorations diy kit for reception', price: 89.99, category: 'DIY', img: '' },
+    { name: 'Wedding Invitation Making Kit', searchTerm: 'diy wedding invitation kit with pocketfold', price: 54.99, category: 'DIY', img: '' }
   ],
   registry: [
-    { name: 'KitchenAid Stand Mixer', asin: 'B08N7XZQ5L', price: 379.99, category: 'Registry', img: '' },
-    { name: 'Dyson V15 Vacuum', asin: 'B07PQR7X9Z', price: 649.99, category: 'Registry', img: '' },
-    { name: 'Nespresso Vertuo Coffee Maker', asin: 'B08LZQ7X9Z', price: 199.99, category: 'Registry', img: '' },
-    { name: 'Le Creuset Dutch Oven', asin: 'B09N7XZQ5L', price: 449.99, category: 'Registry', img: '' },
-    { name: 'Sony Noise Canceling Headphones', asin: 'B07V3XZ7XQ', price: 279.99, category: 'Registry', img: '' },
-    { name: 'Luggage Set 3-Piece', asin: 'B08PKL6X9Z', price: 159.99, category: 'Registry', img: '' }
+    { name: 'KitchenAid Artisan Stand Mixer', searchTerm: 'KitchenAid Artisan Series 5 Quart Tilt-Head Stand Mixer', price: 379.99, category: 'Registry', img: '' },
+    { name: 'Dyson Cordless Vacuum', searchTerm: 'Dyson V15 Detect Cordless Vacuum Cleaner', price: 649.99, category: 'Registry', img: '' },
+    { name: 'Nespresso Vertuo Coffee Maker', searchTerm: 'Nespresso VertuoPlus Coffee and Espresso Machine', price: 199.99, category: 'Registry', img: '' },
+    { name: 'Le Creuset Enameled Dutch Oven', searchTerm: 'Le Creuset Enameled Cast Iron Dutch Oven 5.5 Quart', price: 449.99, category: 'Registry', img: '' },
+    { name: 'Sony Noise Canceling Headphones', searchTerm: 'Sony WH-1000XM5 Wireless Noise Canceling Headphones', price: 279.99, category: 'Registry', img: '' },
+    { name: '3-Piece Luggage Set', searchTerm: '3 piece luggage set hardshell spinner wheels', price: 159.99, category: 'Registry', img: '' },
+    { name: 'Instant Pot Pressure Cooker', searchTerm: 'Instant Pot Duo 7-in-1 Electric Pressure Cooker 6 Quart', price: 89.99, category: 'Registry', img: '' },
+    { name: 'Breville Toaster Oven', searchTerm: 'Breville Smart Oven Air Fryer Pro', price: 399.99, category: 'Registry', img: '' }
   ]
 };
 
@@ -1190,7 +1199,7 @@ class CalculatorEngine {
       const productCount = Math.min(6, allProducts.length);
       amazonProducts = shuffled.slice(0, productCount).map(p => ({
         ...p,
-        url: `https://www.amazon.com/dp/${p.asin}?tag=${AMAZON_TAG}`,
+        url: `https://www.amazon.com/s?k=${encodeURIComponent(p.searchTerm || p.name)}&tag=${AMAZON_TAG}&ref=aiweddingcalc`,
         priceRange: p.price < 50 ? 'under50' : p.price < 150 ? 'mid' : p.price < 300 ? 'high' : 'premium'
       }));
     }
@@ -1689,8 +1698,13 @@ class CalculatorEngine {
     const shuffled = [...products].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, Math.min(count, products.length)).map(p => ({
       ...p,
-      url: `https://www.amazon.com/dp/${p.asin}?tag=${AMAZON_TAG}&linkCode=ogi&th=1&psc=1`
+      url: this.getAmazonSearchLink(p.searchTerm || p.name)
     }));
+  }
+
+  getAmazonSearchLink(searchTerm) {
+    const encoded = encodeURIComponent(searchTerm);
+    return `https://www.amazon.com/s?k=${encoded}&tag=${AMAZON_TAG}&ref=aiweddingcalc`;
   }
 
   getAmazonLink(asin) {
