@@ -1,3 +1,10 @@
 # Cloudflare Pages Redirects
+/tools/wedding-cake-serving-calculator.html /tools/wedding-cake-calculator.html 301
+/tools/wedding-bar-cost-calculator.html /tools/wedding-alcohol-calculator.html 301
+/tools/wedding-dinner-cost-calculator.html /tools/wedding-catering-calculator.html 301
+/tools/wedding-table-size-calculator.html /tools/wedding-seating-chart-planner.html 301
+/tools/wedding-guest-transportation-calculator.html /tools/wedding-transportation-cost-calculator.html 301
+/tools/wedding-accessories-budget-calculator.html /tools/wedding-dress-budget-calculator.html 301
+/tools/wedding-morning-prep-calculator.html /tools/wedding-hair-makeup-calculator.html 301
 # 404 fallback
 /* /404.html 404

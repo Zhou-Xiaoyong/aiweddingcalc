@@ -138,6 +138,8 @@ function calculate(toolId, resultType, form, resultsPanel) {
 
 function renderResults(result, resultType, panel, engine) {
   if (!panel) return;
+  const form = document.getElementById('calcForm');
+  const toolId = form?.dataset.toolId || '';
   let html = '<h2><span class="result-icon">📊</span> Your Results</h2>';
 
   switch(resultType) {
@@ -161,6 +163,9 @@ function renderResults(result, resultType, panel, engine) {
       break;
     case 'alcohol':
       html += renderAlcohol(result, engine);
+      break;
+    case 'alcohol-bar':
+      html += renderAlcoholBar(result, engine);
       break;
     case 'giftrange':
       html += renderGiftRange(result, engine);
@@ -204,6 +209,14 @@ function renderResults(result, resultType, panel, engine) {
     html += renderAISuggestions(result.suggestions);
   }
 
+  // Amazon Product Recommendations
+  if (toolId && engine.getRecommendedProducts) {
+    const amazonProducts = engine.getRecommendedProducts(toolId, 3);
+    if (amazonProducts && amazonProducts.length > 0) {
+      html += renderAmazonProducts(amazonProducts, 'Shop Wedding Essentials on Amazon');
+    }
+  }
+
   panel.innerHTML = html;
   panel.style.display = 'block';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -220,8 +233,22 @@ function renderBreakdown(result, engine) {
     });
     html += '</ul>';
   }
-  if (result.perGuest) {
-    html += `<div style="text-align:center;margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0f0;font-size:0.85rem;color:#737373;">That's approximately <strong style="color:#b76e79">${engine.formatCurrency(result.perGuest)}</strong> per guest</div>`;
+  if (result.perPerson || result.perGuest) {
+    const perPerson = result.perPerson || result.perGuest;
+    html += `<div style="text-align:center;margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0f0;font-size:0.85rem;color:#737373;">That's approximately <strong style="color:#b76e79">${engine.formatCurrency(perPerson)}</strong> per person</div>`;
+  }
+  if (result.styleComparison) {
+    html += '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
+    html += '<div style="font-weight:600;font-size:0.9rem;margin-bottom:0.75rem;color:#333">📊 Service Style Comparison</div>';
+    html += '<ul class="breakdown-list">';
+    const form = document.getElementById('calcForm');
+    const currentStyle = form?.querySelector('#serviceStyle')?.value || '';
+    Object.entries(result.styleComparison).forEach(([style, data]) => {
+      const isSelected = style === currentStyle;
+      const highlight = isSelected ? ' style="background:#fdf2f4;border-radius:8px;padding:0.5rem;margin:-0.25rem -0.5rem"' : '';
+      html += `<li class="breakdown-item"${highlight}><span class="name"><span class="dot"></span>${style}${isSelected ? ' <span style="font-size:0.7rem;color:#b76e79;font-weight:600">(selected)</span>' : ''}</span><span class="value">${engine.formatCurrency(data.perPerson)}/pp <span class="pct">${engine.formatCurrency(data.total)}</span></span></li>`;
+    });
+    html += '</ul></div>';
   }
   return html;
 }
@@ -292,6 +319,33 @@ function renderSeating(result, engine) {
   if (result.extraTables > 0) html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Cake/Gift Tables</span><span class="value">${result.extraTables}</span></li>`;
   html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Total Seating Capacity</span><span class="value">${result.totalSeats} guests</span></li>`;
   html += '</ul>';
+
+  if (result.venueSqft && result.maxCapacity) {
+    html += '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
+    html += '<div style="font-weight:600;font-size:0.9rem;margin-bottom:0.75rem;color:#333">📐 Space & Venue Analysis</div>';
+    html += '<ul class="breakdown-list">';
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Venue Size</span><span class="value">${engine.formatNumber(result.venueSqft)} sq ft</span></li>`;
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Max Venue Capacity</span><span class="value">${result.maxCapacity} guests</span></li>`;
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Space Needed</span><span class="value">${engine.formatNumber(result.requiredSqft)} sq ft</span></li>`;
+    html += '</ul>';
+    if (result.fitsInVenue) {
+      html += '<div style="text-align:center;margin-top:0.75rem;padding:0.75rem;background:#e8f5e9;border-radius:8px;font-size:0.85rem;color:#2e7d32;">✅ Your guests fit comfortably in the venue</div>';
+    } else {
+      html += '<div style="text-align:center;margin-top:0.75rem;padding:0.75rem;background:#fff3e0;border-radius:8px;font-size:0.85rem;color:#e65100;">⚠️ Venue may be tight — consider smaller tables or cocktail style</div>';
+    }
+    html += '</div>';
+  }
+
+  if (result.tableOptions && Object.keys(result.tableOptions).length > 0) {
+    html += '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
+    html += '<div style="font-weight:600;font-size:0.9rem;margin-bottom:0.75rem;color:#333">🪑 Table Size Options</div>';
+    html += '<ul class="breakdown-list">';
+    Object.values(result.tableOptions).forEach(table => {
+      html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>${table.label}</span><span class="value">${table.count} tables (${table.seats} guests each)</span></li>`;
+    });
+    html += '</ul></div>';
+  }
+
   return html;
 }
 
@@ -315,6 +369,41 @@ function renderAlcohol(result, engine) {
   return html;
 }
 
+function renderAlcoholBar(result, engine) {
+  let html = `<div class="result-total"><div class="amount">${engine.formatCurrency(result.totalCost)}</div><div class="label">Estimated Bar Cost</div></div>`;
+  html += `<div style="text-align:center;margin-top:0.5rem;font-size:0.85rem;color:#737373;">Per person: <strong style="color:#b76e79">${engine.formatCurrency(result.perPersonPackage)}</strong> · ${result.totalDrinks} total drinks</div>`;
+
+  html += '<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
+  html += '<div style="font-weight:600;font-size:0.85rem;margin-bottom:0.5rem">🥤 Drink Breakdown:</div>';
+  html += '<ul class="breakdown-list">';
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Beer</span><span class="value">${result.beer} drinks</span></li>`;
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Wine</span><span class="value">${result.wine} drinks</span></li>`;
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Cocktails</span><span class="value">${result.cocktails} drinks</span></li>`;
+  html += `<li class="breakdown-item" style="font-weight:600"><span class="name"><span class="dot"></span>Total Drinks</span><span class="value">${result.totalDrinks}</span></li>`;
+  html += '</ul></div>';
+
+  html += '<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
+  html += '<div style="font-weight:600;font-size:0.85rem;margin-bottom:0.5rem">🛒 To Purchase:</div>';
+  html += '<ul class="breakdown-list">';
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Beer</span><span class="value">${result.bottles.beer} bottles/cans</span></li>`;
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Wine</span><span class="value">${result.bottles.wineBottles} bottles</span></li>`;
+  if (result.bottles.liquorBottles > 0) {
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Liquor</span><span class="value">${result.bottles.liquorBottles} bottles</span></li>`;
+  }
+  html += '</ul></div>';
+
+  html += '<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
+  html += '<div style="font-weight:600;font-size:0.85rem;margin-bottom:0.5rem">💰 Cost Summary:</div>';
+  html += '<ul class="breakdown-list">';
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Package Type</span><span class="value">${result.barPackage}</span></li>`;
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Premium Spirits</span><span class="value">${result.premiumSpirits === 'Yes' ? 'Yes (+30%)' : 'No'}</span></li>`;
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Drinking Guests</span><span class="value">${result.drinkers} guests</span></li>`;
+  html += `<li class="breakdown-item" style="font-weight:600"><span class="name"><span class="dot"></span>Total Cost</span><span class="value" style="color:#b76e79">${engine.formatCurrency(result.totalCost)}</span></li>`;
+  html += '</ul></div>';
+
+  return html;
+}
+
 function renderGiftRange(result, engine) {
   let html = `<div class="result-total"><div class="amount">${engine.formatCurrency(result.recommended)}</div><div class="label">Suggested Gift Amount</div></div>`;
   html += '<ul class="breakdown-list">';
@@ -326,13 +415,48 @@ function renderGiftRange(result, engine) {
 }
 
 function renderRegistry(result, engine) {
-  let html = `<div class="result-total"><div class="amount">${result.totalItems}</div><div class="label">Items to Register For</div></div>`;
+  let html = `<div class="result-total"><div class="amount">${result.totalItems}</div><div class="label">Total Items to Register For</div></div>`;
+  
+  html += '<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
+  html += '<div style="font-weight:600;font-size:0.9rem;margin-bottom:0.75rem;color:#333">📦 Gift Breakdown by Price Range</div>';
   html += '<ul class="breakdown-list">';
-  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Under $50</span><span class="value">${result.under50} items</span></li>`;
-  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>$50 - $150</span><span class="value">${result.midRange} items</span></li>`;
-  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>$150 - $300</span><span class="value">${result.highEnd} items</span></li>`;
-  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>$300+</span><span class="value">${result.premium} items</span></li>`;
-  html += '</ul>';
+  
+  if (result.priceBreakdown) {
+    result.priceBreakdown.forEach(item => {
+      html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>${item.range}</span><span class="value">${item.count} items <span class="pct">${item.pct}%</span></span></li>`;
+      html += `<li class="breakdown-item" style="border:none;padding:2px 0 8px"><div class="breakdown-bar"><div class="breakdown-bar-fill" style="width:${item.pct}%"></div></div></li>`;
+    });
+  } else {
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Under $50</span><span class="value">${result.under50} items</span></li>`;
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>$50 - $150</span><span class="value">${result.midRange} items</span></li>`;
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>$150 - $300</span><span class="value">${result.highEnd} items</span></li>`;
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>$300+</span><span class="value">${result.premium} items</span></li>`;
+  }
+  
+  html += '</ul></div>';
+  
+  if (result.homeStyle) {
+    html += `<div style="text-align:center;margin-top:0.75rem;font-size:0.85rem;color:#737373;">Home style: <strong style="color:#b76e79">${result.homeStyle}</strong></div>`;
+  }
+  
+  if (result.showAmazonProducts && result.amazonProducts && result.amazonProducts.length > 0) {
+    html += '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
+    html += '<div class="amazon-products">';
+    html += `<div class="amazon-products-header"><span class="amazon-icon">🛒</span> Recommended Amazon Registry Products <span class="amazon-disclosure">As an Amazon Associate, we earn from qualifying purchases.</span></div>`;
+    html += '<div class="amazon-product-grid">';
+    
+    result.amazonProducts.forEach(p => {
+      html += `<a href="${p.url}" target="_blank" rel="sponsored nofollow" class="amazon-product-card">`;
+      html += `<div class="amazon-product-name">${p.name}</div>`;
+      html += `<div class="amazon-product-price">$${p.price.toFixed(2)}</div>`;
+      html += '<span class="amazon-cta">Add to Registry →</span>';
+      html += '</a>';
+    });
+    
+    html += '</div></div>';
+    html += '</div>';
+  }
+  
   return html;
 }
 
@@ -357,9 +481,15 @@ function renderTent(result, engine) {
 function renderCake(result, engine) {
   let html = `<div class="result-total"><div class="amount">${engine.formatCurrency(result.total)}</div><div class="label">Estimated Cake Cost</div></div>`;
   html += '<ul class="breakdown-list">';
-  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Servings</span><span class="value">${result.servings}</span></li>`;
+  html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Total Servings</span><span class="value">${result.servings}</span></li>`;
+  if (result.baseServings !== undefined) {
+    html += `<li class="breakdown-item" style="border:none;padding:2px 0 8px"><div style="font-size:0.8rem;color:#737373;padding-left:1.25rem">Guest servings: ${result.baseServings} · 8% buffer: +${result.extraServings - result.baseServings} · Top tier: +${result.topTier}</div></li>`;
+  }
   html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Cost Per Slice</span><span class="value">${engine.formatCurrency(result.costPerSlice)}</span></li>`;
   html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Tiers</span><span class="value">${result.tiers}</span></li>`;
+  if (result.hasDessertBar && result.hasDessertBar !== 'No - Cake Only') {
+    html += `<li class="breakdown-item"><span class="name"><span class="dot"></span>Dessert Bar</span><span class="value" style="font-size:0.85rem">${result.hasDessertBar.replace('Yes - ', '')}</span></li>`;
+  }
   html += '</ul>';
   return html;
 }
@@ -443,5 +573,49 @@ function renderAISuggestions(suggestions) {
     html += `<li>${tip}</li>`;
   });
   html += '</ul></div>';
+  return html;
+}
+
+function renderAmazonProducts(products, title = 'Recommended on Amazon') {
+  if (!products || products.length === 0) return '';
+  let html = '<div class="amazon-products">';
+  html += `<div class="amazon-products-header"><span class="amazon-icon">🛒</span> ${title} <span class="amazon-disclosure">As an Amazon Associate, we earn from qualifying purchases.</span></div>`;
+  html += '<div class="amazon-product-grid">';
+  products.forEach(p => {
+    html += `<a href="${p.url}" target="_blank" rel="noopener sponsored nofollow" class="amazon-product-card">`;
+    html += `<div class="amazon-product-name">${p.name}</div>`;
+    html += `<div class="amazon-product-price">$${p.price.toFixed(2)}</div>`;
+    html += '<span class="amazon-cta">View on Amazon →</span>';
+    html += '</a>';
+  });
+  html += '</div></div>';
+  return html;
+}
+
+function renderStateCostComparison(engine, currentState) {
+  const mostExpensive = engine.getTop5MostExpensiveStates();
+  const leastExpensive = engine.getTop5LeastExpensiveStates();
+  const currentData = engine.getStateCostData(currentState);
+  let html = '<div class="state-cost-comparison">';
+  html += '<div class="state-cost-header"><span class="state-icon">📍</span> Wedding Cost by State</div>';
+  if (currentState && currentState !== 'Other') {
+    html += `<div class="current-state-card"><div class="cs-label">Your State: <strong>${currentState}</strong></div>`;
+    html += `<div class="cs-avg">Average: ${engine.formatCurrency(currentData.avgCost)}</div>`;
+    html += `<div class="cs-range">Range: ${engine.formatCurrency(currentData.low)} – ${engine.formatCurrency(currentData.high)}</div>`;
+    html += `<div class="cs-pct ${currentData.pctAbove >= 0 ? 'above' : 'below'}">${currentData.pctAbove >= 0 ? '+' : ''}${currentData.pctAbove}% vs national average</div>`;
+    html += '</div>';
+  }
+  html += '<div class="state-cols">';
+  html += '<div class="state-col"><h4>Most Expensive States</h4><ul>';
+  mostExpensive.forEach((s, i) => {
+    html += `<li><span class="rank">${i + 1}</span><span class="state-name">${s.state}</span><span class="state-cost">${engine.formatCurrency(s.avgCost)}</span></li>`;
+  });
+  html += '</ul></div>';
+  html += '<div class="state-col"><h4>Least Expensive States</h4><ul>';
+  leastExpensive.forEach((s, i) => {
+    html += `<li><span class="rank">${i + 1}</span><span class="state-name">${s.state}</span><span class="state-cost">${engine.formatCurrency(s.avgCost)}</span></li>`;
+  });
+  html += '</ul></div>';
+  html += '</div></div>';
   return html;
 }

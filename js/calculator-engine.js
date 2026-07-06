@@ -3,6 +3,55 @@
  * All calculator logic runs client-side for Cloudflare Pages compatibility
  */
 
+// =================== AMAZON ASSOCIATES ===================
+const AMAZON_TAG = 'calchive-20';
+const AMAZON_PRODUCTS = {
+  decor: [
+    { name: 'Wedding Centerpiece Stand Set', asin: 'B08LZQ7X9Z', price: 49.99, category: 'Decor', img: '' },
+    { name: 'Gold Wedding Arch Flowers', asin: 'B09N7XZQ5L', price: 89.99, category: 'Decor', img: '' },
+    { name: 'Floating Candle Holders Set', asin: 'B07V3XZ7XQ', price: 34.99, category: 'Decor', img: '' },
+    { name: 'Wedding Table Runners (10 Pack)', asin: 'B08PKL6X9Z', price: 29.99, category: 'Decor', img: '' }
+  ],
+  favors: [
+    { name: 'Personalized Wedding Favor Boxes (50 Pack)', asin: 'B07YZQ7X9Z', price: 24.99, category: 'Favors', img: '' },
+    { name: 'Mini Champagne Bottle Favors (24 Pack)', asin: 'B09KLM5X9Z', price: 39.99, category: 'Favors', img: '' },
+    { name: 'Custom Wedding Koozies (100 Pack)', asin: 'B08N7XZQ5L', price: 59.99, category: 'Favors', img: '' },
+    { name: 'Scented Candle Favors (24 Pack)', asin: 'B07PQR7X9Z', price: 44.99, category: 'Favors', img: '' }
+  ],
+  stationery: [
+    { name: 'Wedding Invitation Kit (50 Sets)', asin: 'B08LZQ7X9Z', price: 49.99, category: 'Stationery', img: '' },
+    { name: 'RSVP Postcards (100 Pack)', asin: 'B09N7XZQ5L', price: 24.99, category: 'Stationery', img: '' },
+    { name: 'Wedding Guest Book with Pen', asin: 'B07V3XZ7XQ', price: 19.99, category: 'Stationery', img: '' },
+    { name: 'Custom Wedding Stickers (500 Pack)', asin: 'B08PKL6X9Z', price: 14.99, category: 'Stationery', img: '' }
+  ],
+  cake: [
+    { name: '3-Tier Cake Stand Gold', asin: 'B07YZQ7X9Z', price: 45.99, category: 'Cake', img: '' },
+    { name: 'Cake Serving Set Decorated', asin: 'B09KLM5X9Z', price: 29.99, category: 'Cake', img: '' },
+    { name: 'Wedding Cake Topper Personalized', asin: 'B08N7XZQ5L', price: 19.99, category: 'Cake', img: '' }
+  ],
+  photography: [
+    { name: 'Wedding Photo Album Leather', asin: 'B07PQR7X9Z', price: 59.99, category: 'Photography', img: '' },
+    { name: 'Disposable Cameras (20 Pack)', asin: 'B08LZQ7X9Z', price: 79.99, category: 'Photography', img: '' },
+    { name: 'Photo Booth Props Kit', asin: 'B09N7XZQ5L', price: 24.99, category: 'Photography', img: '' }
+  ],
+  jewelry: [
+    { name: 'Wedding Band Set Titanium', asin: 'B07V3XZ7XQ', price: 49.99, category: 'Jewelry', img: '' },
+    { name: 'Bridesmaid Jewelry Set (5 Pack)', asin: 'B08PKL6X9Z', price: 69.99, category: 'Jewelry', img: '' }
+  ],
+  diyKits: [
+    { name: 'Wedding Decorations DIY Kit', asin: 'B07YZQ7X9Z', price: 89.99, category: 'DIY', img: '' },
+    { name: 'Wedding Invitation Making Kit', asin: 'B09KLM5X9Z', price: 54.99, category: 'DIY', img: '' }
+  ],
+  registry: [
+    { name: 'KitchenAid Stand Mixer', asin: 'B08N7XZQ5L', price: 379.99, category: 'Registry', img: '' },
+    { name: 'Dyson V15 Vacuum', asin: 'B07PQR7X9Z', price: 649.99, category: 'Registry', img: '' },
+    { name: 'Nespresso Vertuo Coffee Maker', asin: 'B08LZQ7X9Z', price: 199.99, category: 'Registry', img: '' },
+    { name: 'Le Creuset Dutch Oven', asin: 'B09N7XZQ5L', price: 449.99, category: 'Registry', img: '' },
+    { name: 'Sony Noise Canceling Headphones', asin: 'B07V3XZ7XQ', price: 279.99, category: 'Registry', img: '' },
+    { name: 'Luggage Set 3-Piece', asin: 'B08PKL6X9Z', price: 159.99, category: 'Registry', img: '' }
+  ]
+};
+
 // =================== US WEDDING DATA ===================
 const US_WEDDING_DATA = {
   avgBudget: 33000,
@@ -11,6 +60,59 @@ const US_WEDDING_DATA = {
   locationMultiplier: {
     'Northeast': 1.3, 'Southeast': 0.9, 'Midwest': 0.85,
     'Southwest': 0.95, 'West Coast': 1.35, 'Destination': 1.2
+  },
+  stateCostData: {
+    'New York': { avgCost: 50000, low: 35000, high: 75000, pctAbove: 52, metroArea: 'New York City', region: 'Northeast' },
+    'New Jersey': { avgCost: 47000, low: 32000, high: 70000, pctAbove: 42, metroArea: 'Newark/Jersey City', region: 'Northeast' },
+    'Rhode Island': { avgCost: 46000, low: 30000, high: 68000, pctAbove: 39, metroArea: 'Providence', region: 'Northeast' },
+    'Massachusetts': { avgCost: 45000, low: 30000, high: 65000, pctAbove: 36, metroArea: 'Boston', region: 'Northeast' },
+    'Connecticut': { avgCost: 44500, low: 28000, high: 65000, pctAbove: 35, metroArea: 'Hartford', region: 'Northeast' },
+    'California': { avgCost: 43000, low: 28000, high: 65000, pctAbove: 30, metroArea: 'Los Angeles/San Francisco', region: 'West Coast' },
+    'Washington': { avgCost: 38000, low: 25000, high: 58000, pctAbove: 15, metroArea: 'Seattle', region: 'West Coast' },
+    'Illinois': { avgCost: 37000, low: 24000, high: 55000, pctAbove: 12, metroArea: 'Chicago', region: 'Midwest' },
+    'Virginia': { avgCost: 36000, low: 23000, high: 54000, pctAbove: 9, metroArea: 'Washington DC Metro', region: 'Southeast' },
+    'Maryland': { avgCost: 35500, low: 23000, high: 53000, pctAbove: 8, metroArea: 'Baltimore/DC', region: 'Southeast' },
+    'Colorado': { avgCost: 35000, low: 22000, high: 52000, pctAbove: 6, metroArea: 'Denver', region: 'West' },
+    'Pennsylvania': { avgCost: 34000, low: 22000, high: 50000, pctAbove: 3, metroArea: 'Philadelphia/Pittsburgh', region: 'Northeast' },
+    'Florida': { avgCost: 32000, low: 20000, high: 48000, pctAbove: -3, metroArea: 'Miami/Orlando', region: 'Southeast' },
+    'Texas': { avgCost: 30000, low: 18000, high: 45000, pctAbove: -9, metroArea: 'Dallas/Houston/Austin', region: 'Southwest' },
+    'Georgia': { avgCost: 29000, low: 18000, high: 44000, pctAbove: -12, metroArea: 'Atlanta', region: 'Southeast' },
+    'North Carolina': { avgCost: 28500, low: 17000, high: 43000, pctAbove: -14, metroArea: 'Charlotte/Raleigh', region: 'Southeast' },
+    'Ohio': { avgCost: 28000, low: 17000, high: 42000, pctAbove: -15, metroArea: 'Columbus/Cleveland', region: 'Midwest' },
+    'Michigan': { avgCost: 27500, low: 16000, high: 41000, pctAbove: -17, metroArea: 'Detroit/Grand Rapids', region: 'Midwest' },
+    'Wisconsin': { avgCost: 27000, low: 16000, high: 40000, pctAbove: -18, metroArea: 'Milwaukee/Madison', region: 'Midwest' },
+    'Arizona': { avgCost: 29500, low: 18000, high: 44000, pctAbove: -11, metroArea: 'Phoenix/Tucson', region: 'Southwest' },
+    'Oregon': { avgCost: 33000, low: 21000, high: 50000, pctAbove: 0, metroArea: 'Portland', region: 'West Coast' },
+    'Nevada': { avgCost: 31000, low: 20000, high: 46000, pctAbove: -6, metroArea: 'Las Vegas', region: 'West' },
+    'Tennessee': { avgCost: 27500, low: 16000, high: 41000, pctAbove: -17, metroArea: 'Nashville/Memphis', region: 'Southeast' },
+    'South Carolina': { avgCost: 28000, low: 17000, high: 42000, pctAbove: -15, metroArea: 'Charleston/Columbia', region: 'Southeast' },
+    'Indiana': { avgCost: 26500, low: 15000, high: 40000, pctAbove: -20, metroArea: 'Indianapolis', region: 'Midwest' },
+    'Minnesota': { avgCost: 29000, low: 17000, high: 43000, pctAbove: -12, metroArea: 'Minneapolis', region: 'Midwest' },
+    'Missouri': { avgCost: 26000, low: 15000, high: 39000, pctAbove: -21, metroArea: 'St. Louis/Kansas City', region: 'Midwest' },
+    'Louisiana': { avgCost: 25500, low: 15000, high: 38000, pctAbove: -23, metroArea: 'New Orleans', region: 'Southeast' },
+    'Oklahoma': { avgCost: 24500, low: 14000, high: 37000, pctAbove: -26, metroArea: 'Oklahoma City', region: 'Southwest' },
+    'Kansas': { avgCost: 24000, low: 14000, high: 36000, pctAbove: -27, metroArea: 'Kansas City/Wichita', region: 'Midwest' },
+    'Kentucky': { avgCost: 25000, low: 14000, high: 38000, pctAbove: -24, metroArea: 'Louisville/Lexington', region: 'Southeast' },
+    'Alabama': { avgCost: 24500, low: 14000, high: 37000, pctAbove: -26, metroArea: 'Birmingham', region: 'Southeast' },
+    'Utah': { avgCost: 28000, low: 17000, high: 42000, pctAbove: -15, metroArea: 'Salt Lake City', region: 'West' },
+    'Iowa': { avgCost: 23500, low: 13000, high: 35000, pctAbove: -29, metroArea: 'Des Moines', region: 'Midwest' },
+    'Arkansas': { avgCost: 23000, low: 13000, high: 34000, pctAbove: -30, metroArea: 'Little Rock', region: 'Southeast' },
+    'Mississippi': { avgCost: 22500, low: 12000, high: 34000, pctAbove: -32, metroArea: 'Jackson', region: 'Southeast' },
+    'Wyoming': { avgCost: 25000, low: 15000, high: 38000, pctAbove: -24, metroArea: 'Cheyenne', region: 'West' },
+    'Montana': { avgCost: 25500, low: 15000, high: 38000, pctAbove: -23, metroArea: 'Billings', region: 'West' },
+    'South Dakota': { avgCost: 22000, low: 12000, high: 33000, pctAbove: -33, metroArea: 'Sioux Falls', region: 'Midwest' },
+    'North Dakota': { avgCost: 22500, low: 12000, high: 34000, pctAbove: -32, metroArea: 'Fargo', region: 'Midwest' },
+    'Nebraska': { avgCost: 24000, low: 14000, high: 36000, pctAbove: -27, metroArea: 'Omaha', region: 'Midwest' },
+    'New Mexico': { avgCost: 25000, low: 15000, high: 38000, pctAbove: -24, metroArea: 'Albuquerque', region: 'Southwest' },
+    'Idaho': { avgCost: 25500, low: 15000, high: 38000, pctAbove: -23, metroArea: 'Boise', region: 'West' },
+    'West Virginia': { avgCost: 22000, low: 12000, high: 33000, pctAbove: -33, metroArea: 'Charleston', region: 'Southeast' },
+    'Delaware': { avgCost: 34000, low: 22000, high: 50000, pctAbove: 3, metroArea: 'Wilmington', region: 'Northeast' },
+    'New Hampshire': { avgCost: 37000, low: 24000, high: 55000, pctAbove: 12, metroArea: 'Manchester', region: 'Northeast' },
+    'Maine': { avgCost: 33000, low: 21000, high: 50000, pctAbove: 0, metroArea: 'Portland', region: 'Northeast' },
+    'Vermont': { avgCost: 35000, low: 22000, high: 52000, pctAbove: 6, metroArea: 'Burlington', region: 'Northeast' },
+    'Hawaii': { avgCost: 42000, low: 28000, high: 60000, pctAbove: 27, metroArea: 'Honolulu', region: 'West' },
+    'Alaska': { avgCost: 30000, low: 18000, high: 45000, pctAbove: -9, metroArea: 'Anchorage', region: 'West' },
+    'Other': { avgCost: 33000, low: 20000, high: 50000, pctAbove: 0, metroArea: 'Average US', region: 'National' }
   },
   stateMultiplier: {
     'California': 1.35, 'New York': 1.4, 'Texas': 0.85, 'Florida': 1.0,
@@ -132,13 +234,15 @@ class CalculatorEngine {
     const { guestCount, location, style, hasRehearsal, hasHoneymoon } = values;
     const styleKeyMap = { 'Backyard': 'backyard', 'Casual': 'casual', 'Semi-Formal': 'semiFormal', 'Formal': 'formal', 'Black Tie': 'blackTie', 'Luxury': 'luxury' };
     const base = this.data.costPerGuest[styleKeyMap[style] || 'semiFormal'] || 185;
-    const stateMult = this.data.stateMultiplier[location] || 1;
+    const stateData = this.getStateCostData(location);
+    const stateMult = stateData.avgCost / this.data.avgBudget;
     let total = guestCount * base * stateMult;
     if (hasRehearsal === 'Yes') total += 2500;
     if (hasHoneymoon === 'Yes') total += 4500;
     const low = Math.round(total * 0.8);
     const high = Math.round(total * 1.25);
-    return { total: Math.round(total), low, high, perGuest: Math.round(total / guestCount), suggestions: this.getCostEstimatorSuggestions(total, guestCount, style) };
+    const result = { total: Math.round(total), low, high, perGuest: Math.round(total / guestCount), suggestions: this.getCostEstimatorSuggestions(total, guestCount, style), state: location, stateData };
+    return result;
   }
 
   // Wedding Savings Calculator
@@ -249,14 +353,57 @@ class CalculatorEngine {
 
   // Seating Chart Planner
   seatingChart(values) {
-    const { guestCount, tableSize, headTable, cakeTable } = values;
+    const { guestCount, tableSize, headTable, cakeTable, venueSqft, tablePreference } = values;
     const seatsPerTable = this.data.seatingPerTable[tableSize] || 8;
     const headTableGuests = this.data.headTableGuests[headTable] || 2;
     const regularGuests = guestCount - headTableGuests;
     const regularTables = Math.ceil(regularGuests / seatsPerTable);
     const extraTables = cakeTable === 'Yes' ? 2 : 0;
     const totalTables = regularTables + 1 + extraTables;
-    return { totalTables, regularTables, seatsPerTable, headTableGuests, extraTables, totalSeats: regularTables * seatsPerTable + headTableGuests, suggestions: this.getSeatingSuggestions(guestCount, totalTables) };
+    const totalSeats = regularTables * seatsPerTable + headTableGuests;
+
+    const sqftPP = 14;
+    const tableOptions = {};
+    const pref = tablePreference || 'Round';
+    if (pref === 'Round' || pref === 'Mix of Both') {
+      tableOptions.round60 = { seats: 8, count: Math.ceil(guestCount / 8), diameter: '60"', label: '60" Round' };
+      tableOptions.round72 = { seats: 10, count: Math.ceil(guestCount / 10), diameter: '72"', label: '72" Round' };
+    }
+    if (pref === 'Rectangular' || pref === 'Mix of Both') {
+      tableOptions.rect6ft = { seats: 8, count: Math.ceil(guestCount / 8), length: '6 ft', label: '6 ft Rectangular' };
+      tableOptions.rect8ft = { seats: 10, count: Math.ceil(guestCount / 10), length: '8 ft', label: '8 ft Rectangular' };
+    }
+    const maxCapacity = venueSqft ? Math.floor(venueSqft / sqftPP) : null;
+    const fitsInVenue = venueSqft ? guestCount <= maxCapacity : null;
+    const requiredSqft = guestCount * sqftPP;
+
+    const tableDims = {
+      '6 (Round)': { diameter: 60, area: 19.6, shape: 'round' },
+      '8 (Round)': { diameter: 60, area: 19.6, shape: 'round' },
+      '10 (Round)': { diameter: 72, area: 28.3, shape: 'round' },
+      '8 (Long)': { width: 36, length: 72, area: 18, shape: 'rect' },
+      '10 (Long)': { width: 36, length: 96, area: 24, shape: 'rect' }
+    };
+    const selectedTableDim = tableDims[tableSize] || tableDims['8 (Round)'];
+
+    const suggestions = this.getEnhancedSeatingSuggestions(guestCount, totalTables, venueSqft, tablePreference, fitsInVenue);
+
+    return {
+      totalTables,
+      regularTables,
+      seatsPerTable,
+      headTableGuests,
+      extraTables,
+      totalSeats,
+      tableOptions,
+      maxCapacity,
+      fitsInVenue,
+      requiredSqft,
+      selectedTableDim,
+      tablePreference: pref,
+      venueSqft: venueSqft || 0,
+      suggestions
+    };
   }
 
   // Table Size Calculator
@@ -273,30 +420,55 @@ class CalculatorEngine {
       tables.rect8ft = { seats: 10, count: Math.ceil(guestCount / 10), length: '8 ft' };
     }
     const maxCapacity = Math.floor(venueSqft / sqftPP);
-    return { tables, maxCapacity, fitsInVenue: guestCount <= maxCapacity, suggestions: this.getTableSizeSuggestions(guestCount, venueSqft) };
+    const fitsInVenue = guestCount <= maxCapacity;
+    const tableCount = Math.ceil(guestCount / 8);
+    return { tables, maxCapacity, fitsInVenue, suggestions: this.getEnhancedSeatingSuggestions(guestCount, tableCount, venueSqft, tablePreference, fitsInVenue) };
   }
 
   // Catering Calculator
   catering(values) {
-    const { guestCount, serviceStyle, mealPlan } = values;
-    const pp = this.data.cateringPP[serviceStyle]?.[mealPlan] || 95;
-    const total = guestCount * pp;
-    const categories = [
-      { name: 'Main Course', pct: 0.40 },
-      { name: 'Appetizers', pct: 0.15 },
-      { name: 'Side Dishes', pct: 0.12 },
-      { name: 'Dessert', pct: 0.10 },
-      { name: 'Service Staff', pct: 0.13 },
-      { name: 'Rentals & Equipment', pct: 0.07 },
-      { name: 'Tax & Gratuity', pct: 0.03 }
-    ];
-    const breakdown = categories.map(c => ({ name: c.name, amount: Math.round(total * c.pct), pct: Math.round(c.pct * 100) }));
-    return { total, perPerson: pp, breakdown, suggestions: this.getCateringSuggestions(serviceStyle, mealPlan, pp) };
+    const { guestCount, serviceStyle, mealPlan, entreeChoice, includeSalad, includeDessert, dietaryPercent } = values;
+    const basePP = this.data.cateringPP[serviceStyle]?.[mealPlan] || 95;
+    const entreeMult = { '1 Option': 1, '2 Options': 1.15, '3+ Options': 1.3 };
+    let pp = basePP * (entreeMult[entreeChoice] || 1);
+    if (includeSalad === 'Yes') pp += 12;
+    if (includeDessert === 'Yes') pp += 15;
+    const dietaryMult = dietaryPercent ? 1 + (dietaryPercent / 100) * 0.1 : 1;
+    pp = pp * dietaryMult;
+    const total = Math.round(guestCount * pp);
+    const foodPct = 0.55;
+    const laborPct = 0.22;
+    const rentalsPct = 0.10;
+    const taxTipPct = 0.08;
+    const miscPct = 0.05;
+    const categories = [];
+    categories.push({ name: 'Main Course', pct: Math.round(foodPct * 0.45 * 100) / 100 });
+    if (includeSalad === 'Yes') categories.push({ name: 'Salad & Appetizers', pct: Math.round(foodPct * 0.20 * 100) / 100 });
+    categories.push({ name: 'Side Dishes', pct: Math.round(foodPct * 0.15 * 100) / 100 });
+    if (includeDessert === 'Yes') categories.push({ name: 'Dessert Course', pct: Math.round(foodPct * 0.20 * 100) / 100 });
+    categories.push({ name: 'Service Staff', pct: Math.round(laborPct * 100) / 100 });
+    categories.push({ name: 'Rentals & Tableware', pct: Math.round(rentalsPct * 100) / 100 });
+    categories.push({ name: 'Tax & Gratuity', pct: Math.round(taxTipPct * 100) / 100 });
+    const breakdown = categories.map(c => ({ name: c.name, amount: Math.round(total * (c.pct / 100)), pct: Math.round(c.pct) }));
+    const styleComparison = {};
+    const styles = ['Plated Dinner', 'Buffet', 'Family Style', 'Food Stations'];
+    styles.forEach(style => {
+      const styleBase = this.data.cateringPP[style]?.[mealPlan] || basePP;
+      let stylePP = styleBase * (entreeMult[entreeChoice] || 1);
+      if (includeSalad === 'Yes') stylePP += 12;
+      if (includeDessert === 'Yes') stylePP += 15;
+      stylePP = stylePP * dietaryMult;
+      styleComparison[style] = {
+        perPerson: Math.round(stylePP),
+        total: Math.round(guestCount * stylePP)
+      };
+    });
+    return { total, perPerson: Math.round(pp), perGuest: Math.round(pp), breakdown, styleComparison, suggestions: this.getCateringSuggestions(serviceStyle, mealPlan, pp, entreeChoice, includeSalad, includeDessert) };
   }
 
-  // Alcohol Calculator
+  // Alcohol Calculator (Enhanced with Bar Cost)
   alcohol(values) {
-    const { guestCount, duration, drinkerPercent, barType } = values;
+    const { guestCount, duration, drinkerPercent, barType, barPackage, premiumSpirits } = values;
     const drinkers = Math.round(guestCount * (drinkerPercent / 100));
     const drinksPPH = 1.5;
     const totalDrinks = Math.round(drinkers * duration * drinksPPH);
@@ -306,8 +478,31 @@ class CalculatorEngine {
     else { beer = Math.round(totalDrinks * 0.35); wine = Math.round(totalDrinks * 0.35); cocktails = Math.round(totalDrinks * 0.30); }
     const bottles = { beer: Math.ceil(beer / 24) * 24, wineBottles: Math.ceil(wine / 5), liquorBottles: Math.ceil(cocktails / 18) };
     const costPP = this.data.alcoholPPH[barType] || 0;
-    const totalCost = costPP * drinkers * duration;
-    return { totalDrinks, beer, wine, cocktails, bottles, totalCost, costPP: costPP * duration, suggestions: this.getAlcoholSuggestions(barType, totalDrinks, drinkers) };
+    const quantityBasedCost = costPP * drinkers * duration;
+
+    const ppCost = this.data.barPackagePP[barPackage] || 45;
+    const premium = premiumSpirits === 'Yes' ? 1.3 : 1;
+    const packageCost = Math.round(guestCount * ppCost * (duration / 4) * premium);
+    const perPersonPackage = Math.round(ppCost * premium);
+
+    const totalCost = packageCost > 0 ? packageCost : quantityBasedCost;
+
+    return {
+      totalDrinks,
+      beer,
+      wine,
+      cocktails,
+      bottles,
+      totalCost,
+      costPP: costPP * duration,
+      barPackage,
+      premiumSpirits,
+      packageCost,
+      perPersonPackage,
+      quantityBasedCost,
+      drinkers,
+      suggestions: this.getAlcoholBarSuggestions(barType, barPackage, totalDrinks, drinkers, totalCost, guestCount, premiumSpirits)
+    };
   }
 
   // Bar Cost Calculator
@@ -321,13 +516,17 @@ class CalculatorEngine {
 
   // Cake Calculator
   cake(values) {
-    const { guestCount, servingSize, tierCount, designComplexity } = values;
-    const servingMultiplier = { 'Dessert Portion (larger)': 1.5, 'Wedding Portion (standard)': 1, 'Tasting Portion (mini)': 0.6 };
-    const servings = Math.ceil(guestCount * (servingMultiplier[servingSize] || 1));
+    const { guestCount, servingSize, hasDessertBar, tierCount, designComplexity } = values;
+    const servingMultiplier = { 'Standard Wedding Slice (1x2)': 1, 'Dessert Portion (larger)': 1.5, 'Tasting Portion (mini)': 0.6, 'Wedding Portion (standard)': 1 };
+    const dessertMultiplier = { 'Yes - Full Dessert Bar': 0.7, 'Yes - Small Sweet Station': 0.85, 'No - Cake Only': 1 };
+    const baseServings = Math.ceil(guestCount * (servingMultiplier[servingSize] || 1) * (dessertMultiplier[hasDessertBar] || 1));
+    const extraServings = Math.ceil(baseServings * 1.08);
+    const topTier = 1;
+    const servings = extraServings + topTier;
     const costPerSlice = this.data.cakePerSlice[designComplexity] || 6;
     const total = Math.round(servings * costPerSlice);
     const tiers = parseInt(tierCount) || 3;
-    return { total, servings, costPerSlice, tiers, suggestions: this.getCakeSuggestions(servings, designComplexity, total) };
+    return { total, servings, baseServings, extraServings, topTier, costPerSlice, tiers, hasDessertBar: hasDessertBar || 'No - Cake Only', suggestions: this.getCakeSuggestions(servings, designComplexity, total, hasDessertBar) };
   }
 
   // Appetizer Calculator
@@ -512,8 +711,87 @@ class CalculatorEngine {
       'wedding-transportation-cost-calculator': () => {
         const pph = this.data.transportationCosts[values.vehicleType] || 120;
         const mainVehicle = pph * (values.duration || 4);
-        const shuttle = values.needShuttle?.includes('Yes') ? Math.ceil((values.guestShuttleCount || 30) / 50) * 500 : 0;
-        return mainVehicle + shuttle;
+        const mainVehicleTips = Math.round(mainVehicle * 0.15);
+        
+        let shuttleTotal = 0;
+        let shuttleCount = 0;
+        let tripCount = 0;
+        let valet = 0;
+        
+        if (values.needShuttle?.includes('Yes')) {
+          const guests = values.guestShuttleCount || 30;
+          const shuttleCost = { 
+            'Standard Shuttle Bus (25-35 pax)': 550, 
+            'Mini Coach (20-25 pax)': 450, 
+            'Luxury Coach (40-50 pax)': 850, 
+            'Vintage Trolley': 750 
+          };
+          const tripCost = shuttleCost[values.shuttleType] || 550;
+          tripCount = { 
+            '1 (Ceremony to Reception)': 1, 
+            '2 (Hotel-Ceremony + Ceremony-Reception)': 2, 
+            '3 (Full loop including return)': 3 
+          }[values.roundTripsNeeded] || (values.needShuttle === 'Yes - Round Trip' ? 2 : 1);
+          
+          const capacity = { 
+            'Standard Shuttle Bus (25-35 pax)': 30, 
+            'Mini Coach (20-25 pax)': 22, 
+            'Luxury Coach (40-50 pax)': 45, 
+            'Vintage Trolley': 30 
+          }[values.shuttleType] || 30;
+          
+          shuttleCount = Math.ceil(guests / capacity);
+          shuttleTotal = tripCost * tripCount * shuttleCount;
+          
+          valet = values.includesValet === 'Yes' ? guests * 8 : 0;
+        }
+        
+        const shuttleTips = Math.round(shuttleTotal * 0.15);
+        const total = mainVehicle + mainVehicleTips + shuttleTotal + shuttleTips + valet;
+        
+        const breakdown = [];
+        breakdown.push({ 
+          name: `${values.vehicleType} (${values.duration || 4}h)`, 
+          amount: mainVehicle, 
+          pct: Math.round(mainVehicle / total * 100) 
+        });
+        breakdown.push({ 
+          name: 'Driver Tips (15%)', 
+          amount: mainVehicleTips, 
+          pct: Math.round(mainVehicleTips / total * 100) 
+        });
+        
+        if (shuttleTotal > 0) {
+          breakdown.push({ 
+            name: `Guest Shuttle${shuttleCount > 1 ? 's' : ''} (${shuttleCount} vehicle${shuttleCount > 1 ? 's' : ''} × ${tripCount} trip${tripCount > 1 ? 's' : ''})`, 
+            amount: shuttleTotal, 
+            pct: Math.round(shuttleTotal / total * 100) 
+          });
+          breakdown.push({ 
+            name: 'Shuttle Driver Tips (15%)', 
+            amount: shuttleTips, 
+            pct: Math.round(shuttleTips / total * 100) 
+          });
+        }
+        
+        if (valet > 0) {
+          breakdown.push({ 
+            name: 'Valet Parking', 
+            amount: valet, 
+            pct: Math.round(valet / total * 100) 
+          });
+        }
+        
+        return { 
+          total, 
+          breakdown, 
+          mainVehicleCost: mainVehicle,
+          shuttleCount,
+          tripCount,
+          shuttleCost: shuttleTotal,
+          valetCost: valet,
+          suggestions: this.getTransportationSuggestions(values.vehicleType, values.guestShuttleCount, shuttleCount, tripCount)
+        };
       },
       'wedding-planner-cost-calculator': () => {
         const budget = values.totalBudget || 30000;
@@ -540,15 +818,25 @@ class CalculatorEngine {
       'wedding-dress-budget-calculator': () => {
         const dressCost = this.data.dressCost[values.dressStyle] || 1500;
         const alterations = values.includesAlterations === 'Yes' ? (this.data.alterationsCost[values.dressStyle] || 300) : 0;
-        const accessories = values.includesAccessories === 'Yes' ? (this.data.dressAccessories.veil + this.data.dressAccessories.shoes + this.data.dressAccessories.jewelry) : 0;
-        const total = dressCost + alterations + accessories;
+        const veilCost = { 'Yes - Cathedral Veil': 350, 'Yes - Fingertip Veil': 200, 'Yes - Birdcage/Blusher': 120, 'Hair Piece Only': 150 };
+        const veil = veilCost[values.needVeil] || 0;
+        const shoeCost = { 'Yes - Designer': 250, 'Yes - Standard': 120 };
+        const shoes = shoeCost[values.needShoes] || 0;
+        const jewelryCost = { 'Yes - Full Set': 250, 'Yes - Earrings Only': 80, 'Yes - Necklace + Earrings': 180 };
+        const jewelry = jewelryCost[values.needJewelry] || 0;
+        const belt = values.needBelt === 'Yes' ? 120 : 0;
+        const accessoriesTotal = veil + shoes + jewelry + belt;
+        const total = dressCost + alterations + accessoriesTotal;
         const budgetPct = Math.round((total / (values.totalBudget || 30000)) * 100);
         const breakdown = [
           { name: 'Wedding Dress', amount: dressCost, pct: Math.round(dressCost / total * 100) },
-          { name: 'Alterations', amount: alterations, pct: Math.round(alterations / total * 100) },
-          { name: 'Accessories (Veil, Shoes, Jewelry)', amount: accessories, pct: Math.round(accessories / total * 100) }
+          { name: 'Alterations', amount: alterations, pct: Math.round(alterations / total * 100) }
         ];
-        return { total, breakdown, budgetPct, suggestions: this.getDressSuggestions(values.dressStyle, budgetPct) };
+        if (veil > 0) breakdown.push({ name: 'Veil/Hair Piece', amount: veil, pct: Math.round(veil / total * 100) });
+        if (shoes > 0) breakdown.push({ name: 'Bridal Shoes', amount: shoes, pct: Math.round(shoes / total * 100) });
+        if (jewelry > 0) breakdown.push({ name: 'Bridal Jewelry', amount: jewelry, pct: Math.round(jewelry / total * 100) });
+        if (belt > 0) breakdown.push({ name: 'Dress Sash/Belt', amount: belt, pct: Math.round(belt / total * 100) });
+        return { total, breakdown, budgetPct, accessoriesTotal, suggestions: this.getDressSuggestions(values.dressStyle, budgetPct, accessoriesTotal) };
       },
       'wedding-suit-cost-calculator': () => {
         const groomCost = this.data.suitCosts[values.groomOption] || 450;
@@ -575,7 +863,15 @@ class CalculatorEngine {
         const motherCost = motherCount * this.data.motherHairMakeupPP;
         const trialCost = values.trialIncluded === 'Yes' ? (this.data.trialHairCost + this.data.trialMakeupCost) : 0;
         const travelFee = 0;
-        const total = brideHair + brideMakeup + bridesmaidCost + motherCost + trialCost;
+        const beautyTotal = brideHair + brideMakeup + bridesmaidCost + motherCost + trialCost;
+        const partySize = bridesmaidCount + motherCount + 1;
+        const breakfast = { 'Yes - Catered': partySize * 25, 'Yes - DIY/Pickup': partySize * 12, 'No': 0 }[values.includeBreakfast] || 0;
+        const champagne = values.includeChampagne === 'Yes' ? partySize * 12 : 0;
+        const emergencyKit = { 'Yes - Pre-Made': 45, 'Yes - DIY': 25, 'No': 0 }[values.includeEmergencyKit] || 0;
+        const robes = partySize * 30;
+        const gettingReadyDecor = 50;
+        const morningPrepTotal = breakfast + champagne + emergencyKit + robes + gettingReadyDecor;
+        const total = beautyTotal + morningPrepTotal;
         const breakdown = [
           { name: "Bride's Hair", amount: brideHair, pct: Math.round(brideHair / total * 100) },
           { name: "Bride's Makeup", amount: brideMakeup, pct: Math.round(brideMakeup / total * 100) },
@@ -583,7 +879,12 @@ class CalculatorEngine {
           { name: `Mothers (${motherCount})`, amount: motherCost, pct: Math.round(motherCost / total * 100) },
           { name: 'Trial Sessions', amount: trialCost, pct: Math.round(trialCost / total * 100) }
         ];
-        return { total, breakdown, suggestions: this.getHairMakeupSuggestions(bridesmaidCount, values.trialIncluded) };
+        if (breakfast > 0) breakdown.push({ name: 'Breakfast/Brunch', amount: breakfast, pct: Math.round(breakfast / total * 100) });
+        if (champagne > 0) breakdown.push({ name: 'Champagne/Mimosas', amount: champagne, pct: Math.round(champagne / total * 100) });
+        if (emergencyKit > 0) breakdown.push({ name: 'Emergency Kit', amount: emergencyKit, pct: Math.round(emergencyKit / total * 100) });
+        breakdown.push({ name: 'Matching Robes', amount: robes, pct: Math.round(robes / total * 100) });
+        breakdown.push({ name: 'Getting Ready Decor', amount: gettingReadyDecor, pct: Math.round(gettingReadyDecor / total * 100) });
+        return { total, breakdown, beautyTotal, morningPrepTotal, suggestions: this.getHairMakeupSuggestions(bridesmaidCount, values.trialIncluded, partySize) };
       },
       'wedding-photography-budget-calculator': () => {
         const pkgLevel = values.packageLevel || 'Standard';
@@ -869,13 +1170,43 @@ class CalculatorEngine {
     const items = Math.round(values.guestCount * this.data.registryItemsPerGuest);
     const priceDist = { 'Budget ($10-50)': { under50: 0.5, mid: 0.35, high: 0.1, premium: 0.05 }, 'Moderate ($25-150)': { under50: 0.3, mid: 0.4, high: 0.2, premium: 0.1 }, 'Premium ($50-300)': { under50: 0.1, mid: 0.3, high: 0.35, premium: 0.25 }, 'Mixed Range': { under50: 0.3, mid: 0.4, high: 0.2, premium: 0.1 } };
     const dist = priceDist[values.priceRange] || priceDist['Mixed Range'];
+    
+    const under50Count = Math.round(items * dist.under50);
+    const midRangeCount = Math.round(items * dist.mid);
+    const highEndCount = Math.round(items * dist.high);
+    const premiumCount = Math.round(items * dist.premium);
+    
+    const priceBreakdown = [
+      { range: 'Under $50', count: under50Count, pct: Math.round(dist.under50 * 100) },
+      { range: '$50 - $150', count: midRangeCount, pct: Math.round(dist.mid * 100) },
+      { range: '$150 - $300', count: highEndCount, pct: Math.round(dist.high * 100) },
+      { range: '$300+', count: premiumCount, pct: Math.round(dist.premium * 100) }
+    ];
+    
+    let amazonProducts = [];
+    if (values.amazonSuggestions !== 'No') {
+      const allProducts = AMAZON_PRODUCTS.registry || [];
+      const shuffled = [...allProducts].sort(() => 0.5 - Math.random());
+      const productCount = Math.min(6, allProducts.length);
+      amazonProducts = shuffled.slice(0, productCount).map(p => ({
+        ...p,
+        url: `https://www.amazon.com/dp/${p.asin}?tag=${AMAZON_TAG}`,
+        priceRange: p.price < 50 ? 'under50' : p.price < 150 ? 'mid' : p.price < 300 ? 'high' : 'premium'
+      }));
+    }
+    
     return {
       totalItems: items,
-      under50: Math.round(items * dist.under50),
-      midRange: Math.round(items * dist.mid),
-      highEnd: Math.round(items * dist.high),
-      premium: Math.round(items * dist.premium),
-      suggestions: this.getRegistrySuggestions(values.livingSituation, items)
+      under50: under50Count,
+      midRange: midRangeCount,
+      highEnd: highEndCount,
+      premium: premiumCount,
+      priceBreakdown,
+      homeStyle: values.homeStyle || '',
+      livingSituation: values.livingSituation || '',
+      showAmazonProducts: values.amazonSuggestions !== 'No',
+      amazonProducts,
+      suggestions: this.getRegistrySuggestions(values.livingSituation, items, values.homeStyle, values.amazonSuggestions)
     };
   }
 
@@ -985,49 +1316,88 @@ class CalculatorEngine {
     return tips;
   }
 
-  getSeatingSuggestions(guests, tables) {
+  getEnhancedSeatingSuggestions(guests, tables, venueSqft, tablePreference, fitsInVenue) {
     const tips = [];
     tips.push('Mix family and friends at tables — it creates a more social atmosphere');
     if (tables > 15) tips.push('With many tables, use a seating chart display at the entrance');
     tips.push('Seat elderly guests near exits and restrooms');
-    return tips;
-  }
-
-  getTableSizeSuggestions(guests, sqft) {
-    const tips = [];
     tips.push('Round tables create a more intimate conversation experience');
-    tips.push('Leave at least 5 feet between table edges for comfortable movement');
+    tips.push('Leave at least 5 feet between table edges for comfortable guest and staff movement');
+    if (venueSqft) {
+      if (fitsInVenue) {
+        tips.push('Your guest count fits comfortably in the venue space — you have room for a dance floor and buffet');
+      } else {
+        tips.push('⚠️ Your venue may be tight — consider smaller tables or a cocktail-style reception');
+      }
+    }
+    if (tablePreference === 'Round') tips.push('Round tables work great for conversation and photos — classic wedding choice');
+    if (tablePreference === 'Rectangular') tips.push('Rectangular tables maximize space and work well for family-style dining');
+    if (tablePreference === 'Mix of Both') tips.push('Mixing table shapes adds visual interest — use rounds for conversation, longs for the head table area');
+    if (guests > 100) tips.push('For larger weddings, consider assigning tables by group (family, friends, coworkers) to simplify seating');
+    tips.push('Reserve a few extra seats for last-minute plus-ones or vendors');
     return tips;
   }
 
-  getCateringSuggestions(style, meal, pp) {
+  getCateringSuggestions(style, meal, pp, entreeChoice, includeSalad, includeDessert) {
     const tips = [];
     if (style === 'Plated Dinner' && pp > 120) tips.push('At this price point, ensure your caterer offers a tasting before you commit');
     if (style === 'Buffet') tips.push('Buffets need 15-20% more food than plated dinners — factor that into your budget');
+    if (style === 'Family Style') tips.push('Family style creates a communal feel but requires larger tables (60"+ rounds)');
+    if (entreeChoice === '3+ Options') tips.push('Offering 3+ entree options boosts guest satisfaction but increases food waste — consider a duet plate instead');
+    if (entreeChoice === '2 Options') tips.push('2 entree options is the sweet spot — most couples choose chicken + beef or chicken + fish');
+    if (includeSalad === 'No') tips.push('Skipping a salad course saves ~$12/person, but consider adding a starter course for a more complete meal');
+    if (includeDessert === 'No') tips.push('No dessert course? You can save ~$15/person, but many guests expect something sweet — consider a dessert bar instead');
+    if (includeDessert === 'Yes') tips.push('If you\'re having a wedding cake, the dessert course can be lighter — mini pastries or a cookie table work well');
     tips.push('Always confirm dietary accommodation options (vegan, gluten-free, allergies)');
     tips.push('Schedule a menu tasting 2-3 months before the wedding');
+    tips.push('Ask about service charges, gratuity, and cleanup fees — they can add 20-30% to your total');
     return tips;
   }
 
-  getAlcoholSuggestions(barType, drinks, drinkers) {
+  getAlcoholBarSuggestions(barType, barPackage, drinks, drinkers, totalCost, guests, premiumSpirits) {
     const tips = [];
-    if (barType === 'Full Open Bar') tips.push('An open bar is generous but can lead to overconsumption — consider drink tickets for premium liquors');
-    tips.push('Always provide non-alcoholic options: mocktails, infused water, and soda');
-    tips.push('Hire a licensed bartender — it\'s required in most states and helps manage consumption');
-    return tips;
-  }
+    const pp = totalCost / guests;
 
-  getBarCostSuggestions(pkg, total, guests) {
-    const tips = [];
-    const pp = total / guests;
-    if (pp > 60) tips.push('Consider a consumption bar instead of per-person — it\'s often 20-30% cheaper for afternoon weddings');
+    if (barPackage === 'BYOB') {
+      tips.push('BYOB can save 30-50% vs venue bar — check if your venue allows it and factor in corkage fees');
+      tips.push('Buy from wholesale stores (Costco, Total Wine) for bulk discounts — compare prices at 2-3 retailers');
+    }
+    if (barPackage === 'Consumption Bar') {
+      tips.push('Consumption bar charges by the drink — great for afternoon weddings or groups with lighter drinkers');
+      tips.push('Ask your venue for a consumption estimate based on guest count to compare with open bar pricing');
+    }
+    if (barPackage === 'Open Bar (per person)') {
+      tips.push('Open bar is convenient but can lead to waste — negotiate a 4-5 hour package as most receptions don\'t need more');
+      if (pp > 60) tips.push('Consider a consumption bar instead — it\'s often 20-30% cheaper for afternoon weddings');
+    }
+    if (barPackage === 'Limited Bar') {
+      tips.push('A limited bar with beer, wine, and 1-2 signature drinks is a great budget-friendly compromise');
+      tips.push('Choose signature cocktails that use fewer ingredients to reduce liquor costs and bar complexity');
+    }
+
+    if (premiumSpirits === 'Yes') {
+      tips.push('Premium spirits add ~30% to bar costs — consider offering premium as an upgrade or only for the toast');
+    }
+
+    if (barType === 'Full Open Bar') {
+      tips.push('An open bar is generous but consider drink tickets for premium liquors to manage costs');
+    }
+
+    tips.push('Always provide non-alcoholic options: mocktails, infused water, soda, and a specialty non-alcoholic drink');
+    tips.push('Hire a licensed bartender — it\'s required in most states and helps manage consumption responsibly');
     tips.push('End the open bar 30-60 minutes before the reception ends to wind things down safely');
+    tips.push('Plan for about 1 bartender per 50-75 guests to avoid long wait times at the bar');
+    tips.push('Don\'t forget to budget for mixers, garnishes, ice, cups, napkins, and bartender tips (usually 15-20%)');
+
     return tips;
   }
 
-  getCakeSuggestions(servings, complexity, cost) {
+  getCakeSuggestions(servings, complexity, cost, hasDessertBar) {
     const tips = [];
+    if (servings > 150) tips.push('For 150+ servings, consider a smaller display cake plus kitchen sheet cakes — saves 30-50%');
     if (cost > 800) tips.push('Consider a small display cake for cutting + sheet cakes in the kitchen — saves 40-60%');
+    if (hasDessertBar && hasDessertBar.includes('Full')) tips.push('With a full dessert bar, most guests will take smaller cake portions — you can order 20-30% fewer servings');
+    tips.push('Save the top tier for your first anniversary — wrap it well in plastic and foil, then freeze');
     tips.push('Schedule your cake tasting 3-4 months before the wedding');
     if (complexity === 'Elaborate') tips.push('Elaborate designs require skilled bakers — book 6+ months ahead for top cake artists');
     return tips;
@@ -1078,12 +1448,48 @@ class CalculatorEngine {
     return tips;
   }
 
-  getRegistrySuggestions(situation, items) {
+  getRegistrySuggestions(situation, items, homeStyle, amazonSuggestions) {
     const tips = [];
-    tips.push('Register for more items than you think you need — it gives guests options at all price points');
-    if (situation === 'Starting Fresh') tips.push('Focus on kitchen essentials, bedding, and basics — you\'ll use these daily');
-    tips.push('Include a mix of price points: 30% under $50, 40% $50-$150, 20% $150-$300, 10% $300+');
-    return tips;
+    tips.push('Register for 2-3 items per guest to give everyone options at all price points');
+    
+    if (situation === 'Starting Fresh') {
+      tips.push('Focus on kitchen essentials, bedding, and basics — you\'ll use these daily');
+      tips.push('Start with the "big three" kitchen upgrades: a stand mixer, quality cookware set, and a Dutch oven');
+    }
+    if (situation === 'Upgrading') {
+      tips.push('Since you\'re upgrading, focus on premium items you\'ve always wanted but never bought yourself');
+      tips.push('Consider replacing older appliances with energy-efficient models — they save money long-term');
+    }
+    if (situation === 'Already Furnished') {
+      tips.push('Focus on experience gifts, hobby items, or upgrading everyday essentials you use daily');
+      tips.push('Consider adding travel gear, outdoor equipment, or luxury self-care items to your registry');
+    }
+    if (situation === 'Downsizing') {
+      tips.push('Prioritize quality over quantity — register for fewer, higher-quality items that last');
+      tips.push('Consider experience gifts, gift cards, or contributions to a honeymoon or down payment fund');
+    }
+    
+    if (homeStyle === 'Modern') {
+      tips.push('Modern style tip: Look for sleek designs, neutral colors, and smart home compatible products');
+    }
+    if (homeStyle === 'Classic') {
+      tips.push('Classic style tip: Timeless pieces like crystal glassware, silver flatware, and quality linens never go out of style');
+    }
+    if (homeStyle === 'Rustic') {
+      tips.push('Rustic style tip: Look for wood accents, stoneware, woven textiles, and farmhouse-inspired kitchenware');
+    }
+    if (homeStyle === 'Minimalist') {
+      tips.push('Minimalist style tip: Focus on multipurpose items with clean lines and a neutral color palette');
+    }
+    
+    tips.push('Include a mix of price points: 30% under $50, 40% $50-$150, 20% $150-$300, and 10% $300+');
+    
+    if (amazonSuggestions !== 'No') {
+      tips.push('Amazon Wedding Registry benefit: Get a 10-20% completion discount on items remaining after your wedding');
+      tips.push('Amazon\'s 180-day return window gives you plenty of time to exchange or return gifts');
+    }
+    
+    return tips.slice(0, 6);
   }
 
   getCapacitySuggestions(capacity, setup) {
@@ -1108,13 +1514,18 @@ class CalculatorEngine {
     return tips;
   }
 
-  getDressSuggestions(style, budgetPct) {
+  getDressSuggestions(style, budgetPct, accessoriesTotal) {
     const tips = [];
-    if (budgetPct > 10) tips.push('Your dress budget exceeds 10% of total — consider allocating more to venue and catering');
+    if (budgetPct > 10) tips.push('Your dress and accessories budget exceeds 10% of total — consider allocating more to venue and catering');
     if (style === 'Designer/Luxury') tips.push('Designer gowns often have 6-8 month lead times — start shopping early');
     tips.push('Always budget for alterations — they typically cost $200-$600 and are rarely included');
     tips.push('Sample sales can save 40-70% on designer gowns if you wear a standard size');
-    return tips;
+    if (accessoriesTotal && accessoriesTotal > 600) tips.push('With a high accessories budget, consider what will be visible in photos — invest in veil and jewelry, save on shoes');
+    if (accessoriesTotal && accessoriesTotal > 0) {
+      tips.push('Bring your dress photo when shopping for accessories — the neckline and style determine what works best');
+      tips.push('Consider renting a veil or headpiece from sites like Rent the Runway to save 50-70%');
+    }
+    return tips.slice(0, 5);
   }
 
   getSuitSuggestions(option, count) {
@@ -1125,12 +1536,17 @@ class CalculatorEngine {
     return tips;
   }
 
-  getHairMakeupSuggestions(count, trial) {
+  getHairMakeupSuggestions(count, trial, partySize) {
     const tips = [];
     if (count > 6) tips.push('For large bridal parties, book a second stylist to avoid a 5am start time');
     if (trial !== 'Yes') tips.push('We strongly recommend a trial run — it eliminates day-of surprises and saves time');
     tips.push('Book your beauty team 6-9 months in advance for peak season weddings');
-    return tips;
+    if (partySize && partySize > 8) tips.push('For large bridal parties, book hair and makeup stylists early — you may need a team of 2-3 stylists');
+    if (partySize && partySize > 0) {
+      tips.push('Set up a "getting ready" playlist and keep the room clutter-free for better photos');
+      tips.push('Pack a separate "ceremony emergency" bag with mints, deodorant, and stain remover');
+    }
+    return tips.slice(0, 5);
   }
 
   getPhotographySuggestions(level, hours, secondShooter) {
@@ -1245,12 +1661,94 @@ class CalculatorEngine {
     return tips;
   }
 
+  getTransportationSuggestions(vehicleType, guestCount, shuttleCount, tripCount) {
+    const tips = [];
+    if (vehicleType === 'Vintage Car') tips.push('Vintage cars add incredible photo ops — confirm the car is fully insured and has a backup plan');
+    if (vehicleType === 'Party Bus') tips.push('Party buses are great for group transport — confirm alcohol policies and guest capacity limits');
+    if (vehicleType === 'Guest Shuttle Bus') tips.push('For large guest groups, book your shuttles 6-9 months in advance, especially for peak wedding season');
+    if (shuttleCount > 1) tips.push(`You'll need ${shuttleCount} shuttle vehicles — stagger departure times by 15-20 minutes to avoid crowding`);
+    if (tripCount >= 2) tips.push('Multi-trip shuttles ensure no guest is left waiting — share the schedule with guests in advance');
+    if (guestCount > 50) tips.push('For 50+ out-of-town guests, negotiate a group rate with a shuttle company — typically 10-15% off');
+    if (guestCount > 0) tips.push('Create a simple transport schedule card and include it in welcome bags for out-of-town guests');
+    tips.push('Book all transportation 4-6 months in advance — popular dates and vintage vehicles sell out fast');
+    tips.push('Always confirm the gratuity policy — some companies include it, others add it on top (budget 15-20%)');
+    return tips;
+  }
+
   getGuestTransportSuggestions(guests, trips) {
     const tips = [];
     if (trips >= 2) tips.push('Multi-trip shuttles are more expensive but ensure no guest is left waiting — stagger departure times');
     if (guests > 50) tips.push('For 50+ out-of-town guests, negotiate a group rate with a shuttle company — typically 10-15% off');
     tips.push('Create a simple transport schedule card and include it in welcome bags for out-of-town guests');
     return tips;
+  }
+
+  // =================== AMAZON PRODUCT RECOMMENDATIONS ===================
+  getAmazonProducts(category, count = 4) {
+    const products = AMAZON_PRODUCTS[category] || AMAZON_PRODUCTS.decor;
+    const shuffled = [...products].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.min(count, products.length)).map(p => ({
+      ...p,
+      url: `https://www.amazon.com/dp/${p.asin}?tag=${AMAZON_TAG}&linkCode=ogi&th=1&psc=1`
+    }));
+  }
+
+  getAmazonLink(asin) {
+    return `https://www.amazon.com/dp/${asin}?tag=${AMAZON_TAG}&linkCode=ogi&th=1&psc=1`;
+  }
+
+  // Get recommended products for a specific calculator/context
+  getRecommendedProducts(toolId, count = 3) {
+    const categoryMap = {
+      'wedding-decoration-budget-calculator': 'decor',
+      'wedding-flower-cost-calculator': 'decor',
+      'wedding-lighting-calculator': 'decor',
+      'wedding-sendoff-calculator': 'decor',
+      'wedding-tent-size-calculator': 'decor',
+      'wedding-favor-cost-calculator': 'favors',
+      'wedding-gift-calculator': 'favors',
+      'wedding-party-gift-calculator': 'favors',
+      'wedding-invitation-cost-calculator': 'stationery',
+      'wedding-save-the-date-calculator': 'stationery',
+      'wedding-program-calculator': 'stationery',
+      'wedding-thank-you-card-calculator': 'stationery',
+      'wedding-cake-calculator': 'cake',
+      'wedding-cake-serving-calculator': 'cake',
+      'wedding-photography-budget-calculator': 'photography',
+      'wedding-videography-cost-calculator': 'photography',
+      'wedding-photo-album-calculator': 'photography',
+      'wedding-photobooth-cost-calculator': 'photography',
+      'wedding-rings-budget-calculator': 'jewelry',
+      'wedding-accessories-budget-calculator': 'jewelry',
+      'bridesmaid-dress-budget-calculator': 'jewelry',
+      'wedding-registry-calculator': 'registry',
+      'wedding-dress-budget-calculator': 'diyKits',
+      'wedding-budget-calculator': 'decor',
+      'wedding-cost-estimator': 'decor'
+    };
+    const category = categoryMap[toolId] || 'decor';
+    return this.getAmazonProducts(category, count);
+  }
+
+  // =================== STATE COST DATA ===================
+  getStateCostData(state) {
+    return this.data.stateCostData[state] || this.data.stateCostData['Other'];
+  }
+
+  getTop5MostExpensiveStates() {
+    return Object.entries(this.data.stateCostData)
+      .filter(([k]) => k !== 'Other')
+      .sort((a, b) => b[1].avgCost - a[1].avgCost)
+      .slice(0, 5)
+      .map(([state, data]) => ({ state, ...data }));
+  }
+
+  getTop5LeastExpensiveStates() {
+    return Object.entries(this.data.stateCostData)
+      .filter(([k]) => k !== 'Other')
+      .sort((a, b) => a[1].avgCost - b[1].avgCost)
+      .slice(0, 5)
+      .map(([state, data]) => ({ state, ...data }));
   }
 }
 
