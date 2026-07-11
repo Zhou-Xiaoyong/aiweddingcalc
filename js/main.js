@@ -221,6 +221,13 @@ function renderResults(result, resultType, panel, engine) {
 
   panel.innerHTML = html;
   panel.style.display = 'block';
+
+  // Switch layout to full-width when results are shown
+  const calcLayout = panel.closest('.calc-layout');
+  if (calcLayout) {
+    calcLayout.classList.add('has-results');
+  }
+
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -443,7 +450,7 @@ function renderRegistry(result, engine) {
   
   if (result.showAmazonProducts && result.amazonProducts && result.amazonProducts.length > 0) {
     html += '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
-    html += '<div class="amazon-products">';
+    html += '<div class="amazon-products no-print">';
     html += `<div class="amazon-products-header"><span class="amazon-icon">🛒</span> Recommended Amazon Registry Products <span class="amazon-disclosure">As an Amazon Associate, we earn from qualifying purchases.</span></div>`;
     html += '<div class="amazon-product-grid">';
     
@@ -580,7 +587,7 @@ function renderAISuggestions(suggestions) {
 
 function renderAmazonProducts(products, title = 'Recommended on Amazon') {
   if (!products || products.length === 0) return '';
-  let html = '<div class="amazon-products">';
+  let html = '<div class="amazon-products no-print">';
   html += `<div class="amazon-products-header"><span class="amazon-icon">🛒</span> ${title} <span class="amazon-disclosure">As an Amazon Associate, we earn from qualifying purchases.</span></div>`;
   html += '<div class="amazon-product-grid">';
   products.forEach(p => {
@@ -685,7 +692,11 @@ function exportToPDF() {
   if (!resultsPanel) return;
   const toolId = form?.dataset.toolId || 'budget';
   const title = toolId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') + ' Results';
-  const printContent = resultsPanel.innerHTML;
+
+  // Clone the results and remove Amazon/vendor sections for clean export
+  const clone = resultsPanel.cloneNode(true);
+  clone.querySelectorAll('.amazon-products, .vendor-recommendations, .result-actions').forEach(el => el.remove());
+  const printContent = clone.innerHTML;
   const printWindow = window.open('', '_blank');
   if (!printWindow) {
     showToast('Please allow popups to export', '');
@@ -827,7 +838,6 @@ function initResultActions() {
         <button class="action-btn" onclick="saveBudget()">💾 Save Budget</button>
         ${hasSavedBudget() ? '<button class="action-btn" onclick="loadBudget()">📂 Load Saved</button>' : ''}
       </div>
-      ${renderVendorRecommendations(toolId)}
     `;
     const aiSuggestion = resultsPanel.querySelector('.ai-suggestion');
     const amazonProducts = resultsPanel.querySelector('.amazon-products');
