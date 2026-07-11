@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initFAQ();
   initCalculators();
   initCategoryTabs();
+  initResultActions();
+  initNewsletter();
 });
 
 // =================== NAVIGATION ===================
@@ -219,6 +221,13 @@ function renderResults(result, resultType, panel, engine) {
 
   panel.innerHTML = html;
   panel.style.display = 'block';
+
+  // Switch layout to full-width when results are shown
+  const calcLayout = panel.closest('.calc-layout');
+  if (calcLayout) {
+    calcLayout.classList.add('has-results');
+  }
+
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -441,7 +450,7 @@ function renderRegistry(result, engine) {
   
   if (result.showAmazonProducts && result.amazonProducts && result.amazonProducts.length > 0) {
     html += '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #f0f0f0">';
-    html += '<div class="amazon-products">';
+    html += '<div class="amazon-products no-print">';
     html += `<div class="amazon-products-header"><span class="amazon-icon">🛒</span> Recommended Amazon Registry Products <span class="amazon-disclosure">As an Amazon Associate, we earn from qualifying purchases.</span></div>`;
     html += '<div class="amazon-product-grid">';
     
@@ -578,7 +587,7 @@ function renderAISuggestions(suggestions) {
 
 function renderAmazonProducts(products, title = 'Recommended on Amazon') {
   if (!products || products.length === 0) return '';
-  let html = '<div class="amazon-products">';
+  let html = '<div class="amazon-products no-print">';
   html += `<div class="amazon-products-header"><span class="amazon-icon">🛒</span> ${title} <span class="amazon-disclosure">As an Amazon Associate, we earn from qualifying purchases.</span></div>`;
   html += '<div class="amazon-product-grid">';
   products.forEach(p => {
@@ -618,4 +627,241 @@ function renderStateCostComparison(engine, currentState) {
   html += '</ul></div>';
   html += '</div></div>';
   return html;
+}
+
+// =================== BUDGET SAVE / LOAD (localStorage) ===================
+function saveBudget() {
+  const form = document.getElementById('calcForm');
+  if (!form) return;
+  const toolId = form.dataset.toolId;
+  const values = {};
+  form.querySelectorAll('input, select').forEach(field => {
+    values[field.id] = field.value;
+  });
+  const key = `awc_budget_${toolId}`;
+  const data = {
+    values,
+    savedAt: new Date().toISOString(),
+    toolId
+  };
+  localStorage.setItem(key, JSON.stringify(data));
+  showToast('Budget saved successfully!', 'success');
+}
+
+function loadBudget() {
+  const form = document.getElementById('calcForm');
+  if (!form) return;
+  const toolId = form.dataset.toolId;
+  const key = `awc_budget_${toolId}`;
+  const saved = localStorage.getItem(key);
+  if (!saved) {
+    showToast('No saved budget found', '');
+    return false;
+  }
+  try {
+    const data = JSON.parse(saved);
+    Object.entries(data.values).forEach(([id, value]) => {
+      const field = document.getElementById(id);
+      if (field) field.value = value;
+    });
+    if (form.checkValidity()) {
+      const resultsPanel = document.getElementById('resultsPanel');
+      const resultType = form.dataset.resultType;
+      calculate(toolId, resultType, form, resultsPanel);
+    }
+    showToast('Budget loaded successfully!', 'success');
+    return true;
+  } catch (e) {
+    showToast('Error loading budget', '');
+    return false;
+  }
+}
+
+function hasSavedBudget() {
+  const form = document.getElementById('calcForm');
+  if (!form) return false;
+  const toolId = form.dataset.toolId;
+  const key = `awc_budget_${toolId}`;
+  return localStorage.getItem(key) !== null;
+}
+
+// =================== PDF / PRINT EXPORT ===================
+function exportToPDF() {
+  const resultsPanel = document.getElementById('resultsPanel');
+  const form = document.getElementById('calcForm');
+  if (!resultsPanel) return;
+  const toolId = form?.dataset.toolId || 'budget';
+  const title = toolId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') + ' Results';
+
+  // Clone the results and remove Amazon/vendor sections for clean export
+  const clone = resultsPanel.cloneNode(true);
+  clone.querySelectorAll('.amazon-products, .vendor-recommendations, .result-actions').forEach(el => el.remove());
+  const printContent = clone.innerHTML;
+  const printWindow = window.open('', '_blank');
+  if (!printWindow) {
+    showToast('Please allow popups to export', '');
+    return;
+  }
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <title>${title} | AI Wedding Calc</title>
+      <style>
+        body { font-family: 'Inter', -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #262626; }
+        h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; margin-bottom: 1rem; color: #b76e79; }
+        h2 { font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .result-total { text-align: center; padding: 1.5rem 0; border-bottom: 1px solid #e5e5e5; margin-bottom: 1rem; }
+        .result-total .amount { font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; font-weight: 700; color: #b76e79; }
+        .result-total .label { font-size: 0.85rem; color: #737373; margin-top: 0.25rem; }
+        .breakdown-list { list-style: none; padding: 0; }
+        .breakdown-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #f5f5f5; }
+        .breakdown-item .name { font-size: 0.9rem; color: #525252; }
+        .breakdown-item .value { font-size: 0.9rem; font-weight: 600; color: #262626; }
+        .breakdown-item .pct { font-size: 0.75rem; color: #a3a3a3; margin-left: 0.25rem; }
+        .footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e5e5; font-size: 0.75rem; color: #a3a3a3; text-align: center; }
+        .ai-suggestion { background: #fdf6f7; border: 1px solid rgba(183,110,121,0.15); border-radius: 8px; padding: 1rem; margin-top: 1rem; }
+        .ai-suggestion ul { list-style: none; padding: 0; margin: 0; }
+        .ai-suggestion li { font-size: 0.85rem; color: #525252; padding: 0.25rem 0; padding-left: 1.25rem; position: relative; }
+        .ai-suggestion li::before { content: '💡'; position: absolute; left: 0; font-size: 0.75rem; }
+        @media print { body { margin: 20px; } }
+      </style>
+    </head>
+    <body>
+      <h1>${title}</h1>
+      <p style="font-size:0.8rem;color:#737373;margin-bottom:1.5rem;">Generated by AI Wedding Calc on ${new Date().toLocaleDateString()}</p>
+      ${printContent}
+      <div class="footer">
+        Generated by AI Wedding Calc | aiweddingcalc.com<br>
+        All estimates are for planning purposes only.
+      </div>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.focus();
+  setTimeout(() => {
+    printWindow.print();
+  }, 500);
+}
+
+// =================== TOAST NOTIFICATIONS ===================
+function showToast(message, type = '') {
+  let toast = document.querySelector('.toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.className = 'toast show ' + type;
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => {
+    toast.className = 'toast ' + type;
+  }, 2500);
+}
+
+// =================== VENDOR RECOMMENDATIONS ===================
+const VENDOR_RECOMMENDATIONS = {
+  'wedding-budget-calculator': [
+    { name: 'Wedding Planner Pro', rating: '4.9 ★', location: 'Nationwide', cta: 'Get Free Quote', url: '#', category: 'planner' },
+    { name: 'Budget Wedding Co.', rating: '4.8 ★', location: 'Online', cta: 'Book Consultation', url: '#', category: 'consulting' }
+  ],
+  'wedding-venue-cost-calculator': [
+    { name: 'Elegant Venues', rating: '4.9 ★', location: 'Find Near You', cta: 'Compare Venues', url: '#', category: 'venue' },
+    { name: 'All-Inclusive Weddings', rating: '4.7 ★', location: 'Multiple Cities', cta: 'View Packages', url: '#', category: 'venue' }
+  ],
+  'wedding-photography-budget-calculator': [
+    { name: 'Capture Moments Photo', rating: '5.0 ★', location: 'Find Photographers', cta: 'Get Quotes', url: '#', category: 'photographer' },
+    { name: 'Love Story Studio', rating: '4.9 ★', location: 'Nationwide Network', cta: 'View Portfolio', url: '#', category: 'photographer' }
+  ],
+  'wedding-catering-calculator': [
+    { name: 'Gourmet Catering Co.', rating: '4.8 ★', location: 'Find Caterers', cta: 'Get Menu & Quote', url: '#', category: 'caterer' },
+    { name: 'Farm to Table Events', rating: '4.9 ★', location: 'Multiple Regions', cta: 'View Menus', url: '#', category: 'caterer' }
+  ],
+  'wedding-flower-cost-calculator': [
+    { name: 'Bloom Floral Design', rating: '4.9 ★', location: 'Find Florists', cta: 'Get Flower Quote', url: '#', category: 'florist' },
+    { name: 'Petal & Vine', rating: '4.8 ★', location: 'Nationwide', cta: 'View Designs', url: '#', category: 'florist' }
+  ],
+  'wedding-dj-cost-calculator': [
+    { name: 'Pro DJ Services', rating: '4.9 ★', location: 'Find DJs Near You', cta: 'Book a DJ', url: '#', category: 'dj' },
+    { name: 'Beat Masters', rating: '4.8 ★', location: 'Multi-City', cta: 'View Packages', url: '#', category: 'dj' }
+  ],
+  'wedding-dress-budget-calculator': [
+    { name: 'Bridal Boutique Collection', rating: '4.9 ★', location: 'Online + Stores', cta: 'Browse Dresses', url: '#', category: 'dress' },
+    { name: 'Designer Bridal Outlet', rating: '4.7 ★', location: 'Online', cta: 'Shop Sale', url: '#', category: 'dress' }
+  ]
+};
+
+function getVendorRecommendations(toolId) {
+  return VENDOR_RECOMMENDATIONS[toolId] || [
+    { name: 'Wedding Vendor Network', rating: '4.8 ★', location: 'Find Local Vendors', cta: 'Get Matched', url: '#', category: 'general' },
+    { name: 'Premier Wedding Pros', rating: '4.9 ★', location: 'Nationwide', cta: 'View Profiles', url: '#', category: 'general' }
+  ];
+}
+
+function renderVendorRecommendations(toolId) {
+  const vendors = getVendorRecommendations(toolId);
+  if (!vendors || vendors.length === 0) return '';
+  let html = '<div class="vendor-recommendations">';
+  html += '<div class="vendor-rec-header"><span class="vendor-icon">🏆</span> Recommended Vendors <span class="vendor-disclosure">Partner vendors. We may earn a commission at no extra cost to you.</span></div>';
+  html += '<div class="vendor-card-grid">';
+  vendors.forEach(v => {
+    html += `<a href="${v.url}" class="vendor-card" target="_blank" rel="noopener sponsored nofollow">`;
+    html += `<div class="vendor-card-name">${v.name}</div>`;
+    html += `<div class="vendor-card-rating">${v.rating}</div>`;
+    html += `<div class="vendor-card-location">${v.location}</div>`;
+    html += `<span class="vendor-card-cta">${v.cta} →</span>`;
+    html += '</a>';
+  });
+  html += '</div></div>';
+  return html;
+}
+
+// =================== INIT RESULT ACTIONS ===================
+function initResultActions() {
+  const resultsPanel = document.getElementById('resultsPanel');
+  const form = document.getElementById('calcForm');
+  if (!resultsPanel || !form) return;
+
+  const observer = new MutationObserver(() => {
+    addResultActionsToPanel();
+  });
+  observer.observe(resultsPanel, { childList: true, subtree: true });
+
+  function addResultActionsToPanel() {
+    if (resultsPanel.querySelector('.result-actions')) return;
+    const toolId = form.dataset.toolId;
+    const actionsHtml = `
+      <div class="result-actions">
+        <button class="action-btn primary" onclick="exportToPDF()">📄 Export PDF</button>
+        <button class="action-btn" onclick="saveBudget()">💾 Save Budget</button>
+        ${hasSavedBudget() ? '<button class="action-btn" onclick="loadBudget()">📂 Load Saved</button>' : ''}
+      </div>
+    `;
+    const aiSuggestion = resultsPanel.querySelector('.ai-suggestion');
+    const amazonProducts = resultsPanel.querySelector('.amazon-products');
+    if (amazonProducts) {
+      amazonProducts.insertAdjacentHTML('afterend', actionsHtml);
+    } else if (aiSuggestion) {
+      aiSuggestion.insertAdjacentHTML('afterend', actionsHtml);
+    } else {
+      resultsPanel.insertAdjacentHTML('beforeend', actionsHtml);
+    }
+  }
+}
+
+// =================== NEWSLETTER ===================
+function initNewsletter() {
+  const forms = document.querySelectorAll('.newsletter-form');
+  forms.forEach(form => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = form.querySelector('input[type="email"]')?.value;
+      if (email) {
+        showToast('Thanks for subscribing! Check your inbox.', 'success');
+        form.reset();
+      }
+    });
+  });
 }
