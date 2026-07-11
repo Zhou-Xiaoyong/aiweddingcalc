@@ -276,6 +276,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.3; col
   font-size: 1rem;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   box-shadow: var(--shadow-md);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .hero-cta:hover {
