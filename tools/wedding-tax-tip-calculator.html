@@ -81,16 +81,16 @@
           <h2>🧾 Enter Your Details</h2>
           <div class="form-group">
       <label for="cateringCost">Total Catering Cost ($) <span style="color:#e53935">*</span></label>
-      <input type="number" id="cateringCost" name="cateringCost" placeholder="10000"  max="200000" step="100" required>
+      <input type="number" id="cateringCost" name="cateringCost" placeholder="10000" min="0" max="200000" step="100" required>
     </div><div class="form-group">
       <label for="venueCost">Venue Rental Cost ($) <span style="color:#e53935">*</span></label>
-      <input type="number" id="venueCost" name="venueCost" placeholder="5000"  max="100000" step="100" required>
+      <input type="number" id="venueCost" name="venueCost" placeholder="5000" min="0" max="100000" step="100" required>
     </div><div class="form-group">
       <label for="barCost">Bar Service Cost ($) <span style="color:#e53935">*</span></label>
-      <input type="number" id="barCost" name="barCost" placeholder="3000"  max="50000" step="100" required>
+      <input type="number" id="barCost" name="barCost" placeholder="3000" min="0" max="50000" step="100" required>
     </div><div class="form-group">
       <label for="otherServices">Other Services Cost ($)</label>
-      <input type="number" id="otherServices" name="otherServices" placeholder="5000"  max="100000" step="100" >
+      <input type="number" id="otherServices" name="otherServices" placeholder="5000" min="0" max="100000" step="100" >
     </div><div class="form-group">
         <label for="state">State <span style="color:#e53935">*</span></label>
         <select id="state" name="state" required>
@@ -183,7 +183,7 @@
     <div class="footer-grid">
       <div class="footer-about">
         <a href="/" class="logo"><img src="/logo.svg" alt="Wedding Rings" class="logo-icon-img"> AI Wedding Calc</a>
-        <p>Free AI-powered wedding calculators to help you plan your perfect day. Trusted by 100,000+ couples across the US.</p>
+        <p>Free AI-powered wedding calculators to help you plan your perfect day — no sign-ups, no paywalls.</p>
       </div>
       <div class="footer-col">
         <h4>Budget Tools</h4>
@@ -191,7 +191,7 @@
       </div>
       <div class="footer-col">
         <h4>Food & Drinks</h4>
-        <ul><li><a href="/tools/wedding-catering-calculator.html">Catering Calc</a></li><li><a href="/tools/wedding-alcohol-calculator.html">Alcohol Calc</a></li><li><a href="/tools/wedding-bar-cost-calculator.html">Bar Cost</a></li><li><a href="/tools/wedding-cake-calculator.html">Cake Calc</a></li></ul>
+        <ul><li><a href="/tools/wedding-catering-calculator.html">Catering Calc</a></li><li><a href="/tools/wedding-alcohol-calculator.html">Alcohol Calc</a></li><li><a href="/tools/wedding-alcohol-calculator.html">Bar Cost</a></li><li><a href="/tools/wedding-cake-calculator.html">Cake Calc</a></li></ul>
       </div>
       <div class="footer-col">
         <h4>Planning</h4>
@@ -200,7 +200,7 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 AI Wedding Calc. All rights reserved.</span>
-      <span>Made with love for couples planning their big day</span>
+      <span><a href="/about.html">About</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></span>
     </div>
   </div>
 </footer>
