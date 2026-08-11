@@ -6,15 +6,16 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com; frame-ancestors 'none'
+  Cache-Control: public, max-age=3600
 
+# NOTE: pages are served at extensionless (pretty) URLs, so a "/*.html" rule
+# would never match. Page caching lives in the /* block above; the rules below
+# are more specific and override it for static assets.
 /css/*
   Cache-Control: public, max-age=31536000, immutable
 
 /js/*
   Cache-Control: public, max-age=31536000, immutable
-
-/*.html
-  Cache-Control: public, max-age=3600
 
 /sitemap.xml
   Cache-Control: public, max-age=86400
