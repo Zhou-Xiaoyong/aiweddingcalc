@@ -7,9 +7,57 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://aiweddingcalc.com/about</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://aiweddingcalc.com/contact</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://aiweddingcalc.com/privacy</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://aiweddingcalc.com/terms</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://aiweddingcalc.com/blog/</loc>
-    <lastmod>2026-08-11</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aiweddingcalc.com/blog/average-cost-of-wedding-flowers-2026</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aiweddingcalc.com/blog/average-wedding-cost-by-state</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aiweddingcalc.com/blog/average-wedding-cost-in-california</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aiweddingcalc.com/blog/cheapest-month-to-get-married</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
@@ -17,6 +65,12 @@
     <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aiweddingcalc.com/blog/how-much-alcohol-for-100-guests-wedding</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://aiweddingcalc.com/blog/how-to-choose-wedding-venue</loc>
@@ -37,40 +91,16 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://aiweddingcalc.com/blog/wedding-timeline-checklist-12-months</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiweddingcalc.com/blog/wedding-vendor-tipping-guide</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://aiweddingcalc.com/blog/average-cost-of-wedding-flowers-2026</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://aiweddingcalc.com/blog/how-much-alcohol-for-100-guests-wedding</loc>
-    <lastmod>2026-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://aiweddingcalc.com/blog/wedding-budget-for-50-guests</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://aiweddingcalc.com/blog/who-pays-for-the-wedding-traditionally</loc>
-    <lastmod>2026-08-04</lastmod>
+    <loc>https://aiweddingcalc.com/blog/wedding-timeline-checklist-12-months</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiweddingcalc.com/blog/wedding-under-5000-dollars-budget-plan</loc>
@@ -79,14 +109,14 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://aiweddingcalc.com/blog/average-wedding-cost-by-state</loc>
-    <lastmod>2026-08-11</lastmod>
+    <loc>https://aiweddingcalc.com/blog/wedding-vendor-tipping-guide</loc>
+    <lastmod>2026-07-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://aiweddingcalc.com/blog/average-wedding-cost-in-california</loc>
-    <lastmod>2026-08-11</lastmod>
+    <loc>https://aiweddingcalc.com/blog/who-pays-for-the-wedding-traditionally</loc>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -401,29 +431,5 @@
     <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiweddingcalc.com/about</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://aiweddingcalc.com/contact</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://aiweddingcalc.com/privacy</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://aiweddingcalc.com/terms</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
   </url>
 </urlset>
